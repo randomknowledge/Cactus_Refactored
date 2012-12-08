@@ -7,9 +7,9 @@ class ServeTask(BaseTask):
     Lorem Ipsum...
     """
 
-    helptext_short = "serve <host:port>: Serve you website at " \
+    helptext_short = "serve [host:port]: Serve you website at " \
                      "local development server"
 
-    @staticmethod
-    def run(*args, **kwargs):
+    @classmethod
+    def run(cls, *args, **kwargs):
         print "Serve called:", args

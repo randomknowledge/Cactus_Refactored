@@ -9,6 +9,6 @@ class BuildTask(BaseTask):
 
     helptext_short = "build: Rebuild your site from source files"
 
-    @staticmethod
-    def run(*args, **kwargs):
+    @classmethod
+    def run(cls, *args, **kwargs):
         print "Build called:", args
