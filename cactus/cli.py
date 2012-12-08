@@ -2,6 +2,7 @@
 # coding: utf-8
 import inspect
 import traceback
+import cactus
 from cactus.tasks import BaseTask
 from django.utils.log import logger
 import re
@@ -61,13 +62,13 @@ def help(tasks):
 
 
 def main():
-    tasks = import_tasks()
+    cactus.active_tasks = import_tasks()
     command = sys.argv[1] if len(sys.argv) > 1 else None
-    if not command or not command in tasks.keys():
-        help(tasks)
+    if not command or not command in cactus.active_tasks.keys():
+        help(cactus.active_tasks)
         sys.exit()
 
-    tasks.get(command).run(*sys.argv[2:])
+    cactus.active_tasks.get(command).run(*sys.argv[2:])
 
 if __name__ == "__main__":
     sys.exit(main())

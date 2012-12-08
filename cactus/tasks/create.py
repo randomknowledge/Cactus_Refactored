@@ -7,7 +7,7 @@ class CreateTask(BaseTask):
     Lorem Ipsum...
     """
 
-    helptext_short = "create: Create a new website skeleton at path"
+    helptext_short = "create <path>: Create a new website skeleton at path"
 
     @staticmethod
     def run(*args, **kwargs):
