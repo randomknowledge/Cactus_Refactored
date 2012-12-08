@@ -17,7 +17,8 @@ class BaseTask(object):
 
     @classmethod
     def usage(cls):
-        return u"\nUsage: cactus {0}\n\n{1}".format(cls.helptext_short, cls.__doc__.strip())
+        return u"\nUsage: cactus {0}\n\n{1}".format(
+            cls.helptext_short, cls.__doc__.strip())
 
     @classmethod
     def name(cls):
