@@ -1,0 +1,25 @@
+# # # # # # # # #
+# Cactus config #
+# # # # # # # # #
+
+#
+# Common settings
+# =========================
+
+# Active Plugins
+common:
+  plugins:
+    - coffeescript
+
+#
+# Plugin specific settings
+# =========================
+plugins:
+  coffeescript:
+    build_order:
+      - main.coffee
+    command: "coffee --join main.js --compile --output {dir_js} {files}"
+
+  sass:
+    main_file:
+      - main.sass

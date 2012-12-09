@@ -27,7 +27,7 @@ class CoffeeScriptPlugin(CactusPluginBase):
         def sort_by_buildorder(a, b):
             return 0
         try:
-            build_order = self.site.config.get("coffee").get("build_order")
+            build_order = self.config.get("build_order")
             if build_order:
                 def sort_by_buildorder(a, b):
                     a = a.replace(coffeepath + "/", "")
@@ -51,21 +51,16 @@ class CoffeeScriptPlugin(CactusPluginBase):
         files.sort(sort_by_buildorder)
 
         files = " ".join(map(lambda x: shell_escape(x), files))
-        coffee = "coffee"
-        #TODO: make this configurable
-        if os.name == "nt":
-            coffee = '"c:/Program Files/nodejs/node.exe" ' \
-                     '"c:/Program Files/CoffeeScript/bin/coffee"'
-        cmd = "{0} --join main.js --compile " \
-              "--output {1} {2}".format(
-                    coffee,
-                    shell_escape(
+        coffee = self.config.get("command", "coffee --join main.js --compile --output {dir_js} {files}")
+
+        cmd = coffee.format(
+                    dir_js = shell_escape(
                         os.path.abspath(
                             os.path.join(
                                 self.site.paths['build'], "static", "js"
                             )
                         )
-                    ), files
+                    ), files = files
         )
 
         if os.name == "nt":

@@ -10,6 +10,7 @@ from cactus.page import Page
 from cactus.plugins import CactusPluginBase
 from cactus.utils import fileList
 import os
+import yaml
 
 
 class NoCactusDirectoryException(Exception):
@@ -30,11 +31,7 @@ class Site(object):
             'script': os.path.join(os.getcwd(), __file__)
         }
 
-        self.config = {
-            "plugins": [
-                "coffeescript",
-            ]
-        }
+        self.config = yaml.load(open(os.path.join(path, "config.yml"), 'r'))
 
     def bootstrap(self, skeleton):
         """
@@ -186,7 +183,7 @@ class Site(object):
             os.path.join(os.path.dirname(__file__), "plugins")
         )
         parentmodule = "cactus.plugins"
-        for plugin in self.config.get("plugins"):
+        for plugin in self.config.get("common").get("plugins"):
             path = os.path.realpath(
                 os.path.join(local_plugin_dir, "{0}.py".format(plugin))
             )
@@ -230,6 +227,5 @@ class Site(object):
             self.load_plugins()
 
         for plugin_name, plugin in self._plugins.iteritems():
-            print plugin, method, getattr(plugin, method)
             if hasattr(plugin, method):
                 getattr(plugin, method)(*args, **kwargs)

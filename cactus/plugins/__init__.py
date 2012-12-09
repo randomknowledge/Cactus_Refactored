@@ -4,6 +4,11 @@
 class CactusPluginBase(object):
     def __init__(self, site):
         self.site = site
+        self.name = self.__module__.split(".").pop()
+        try:
+            self.config = site.config.get("plugins").get(self.name)
+        except:
+            self.config = {}
 
     def preBuild(self, *args, **kwargs):
         pass
