@@ -1,3 +1,5 @@
 .DS_Store
 /static/js/main.js
 /static/css/main.css
+.tmp/
+dist/
