@@ -95,7 +95,6 @@ def retry(ExceptionToCheck, tries=4, delay=3, backoff=2):
 
 def shell_escape(path):
     if os.name == "nt":
-        return path
-        #return '"{0}"'.format(path)
+        return '"{0}"'.format(path)
     else:
         return pipes.quote(path)

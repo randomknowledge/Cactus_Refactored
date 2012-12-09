@@ -16,13 +16,11 @@ class CoffeeScriptPlugin(CactusPluginBase):
     def run(self, *args, **kwargs):
         coffeepath = os.path.realpath(
             os.path.join(
-                self.site.paths['build'], 'static', 'coffee'
+                self.site.paths['static'], 'coffee'
             )
         )
         if not os.path.isdir(coffeepath) or not os.listdir(coffeepath):
             return
-
-        #os.chdir(os.path.join( self.site.paths['build'], 'static'))
 
         def sort_by_buildorder(a, b):
             return 0

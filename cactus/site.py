@@ -6,11 +6,12 @@ import socket
 import traceback
 import webbrowser
 import sys
+import os
+import yaml
 from cactus.page import Page
 from cactus.plugins import CactusPluginBase
 from cactus.utils import fileList
-import os
-import yaml
+from cactus import browser
 
 
 class NoCactusDirectoryException(Exception):
@@ -66,7 +67,21 @@ class Site(object):
         os.chdir(self.paths['build'])
 
         def rebuild(changes):
-            pass
+            logging.info("*** Rebuilding ({0} changed)".format(self.path))
+
+            # We will pause the listener while building so scripts that alter the output
+            # like coffeescript and less don't trigger the listener again immediately.
+            self.listener.pause()
+            try:
+                self.build()
+            except Exception, e:
+                logging.info("*** Error while building\n{0}".format(e))
+                traceback.print_exc(file=sys.stdout)
+
+            browser.browserReload("http://localhost:{0}".format(port))
+
+            self.listener.resume()
+
 
         from .listener import Listener
         from .server import Server, RequestHandler
@@ -133,11 +148,14 @@ class Site(object):
         Configure django to use both our template and pages folder as locations
         to look for included templates.
         """
-        from django.conf import settings
-        settings.configure(
-            TEMPLATE_DIRS=[self.paths['templates'], self.paths['pages']],
-            INSTALLED_APPS=['django.contrib.markup']
-        )
+        try:
+            from django.conf import settings
+            settings.configure(
+                TEMPLATE_DIRS=[self.paths['templates'], self.paths['pages']],
+                INSTALLED_APPS=['django.contrib.markup']
+            )
+        except:
+            pass
 
     def pages(self):
         """
