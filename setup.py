@@ -7,6 +7,7 @@ Static site generation and deployment.
 :copyright: (c) 2012 Florian Finke.
 :license: MIT
 """
+import finddata
 from setuptools import setup
 
 
@@ -20,6 +21,7 @@ setup(
 	author_email='flo@randomknowledge.org',
 	license='MIT',
 	packages=['cactus', 'cactus.tasks'],
+    package_data=finddata.find_package_data(),
 	entry_points={
 		'console_scripts': [
 			'cactus = cactus.cli:main',

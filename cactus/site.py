@@ -1,4 +1,5 @@
 # coding: utf-8
+import shutil
 import os
 
 
@@ -10,19 +11,17 @@ class Site(object):
     def __init__(self, path):
         self.path = path
 
-    def bootstrap(self):
+    def bootstrap(self, skeleton):
         """
         Bootstrap a new project at a given path.
         """
 
-        print "BOOTSTRAP"
+        shutil.copytree(skeleton, self.path)
 
     def verify(self):
         """
         Check if this path looks like a Cactus website
         """
-
-        print "VERIFY"
 
         for p in ['pages', 'static', 'templates']:
             if not os.path.isdir(os.path.join(self.path, p)):
