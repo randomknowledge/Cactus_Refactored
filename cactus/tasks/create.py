@@ -25,7 +25,9 @@ class CreateTask(BaseTask):
             skel = args[1]
         if not re.search(r'[\/]', skel):
             skel = os.path.realpath(
-                os.path.join(os.path.dirname(__file__), "..", "skeletons", skel)
+                os.path.join(
+                    os.path.dirname(__file__), "..", "skeletons", skel
+                )
             )
         if not os.path.isdir(skel):
             print "No skeleton found at {0}".format(skel)

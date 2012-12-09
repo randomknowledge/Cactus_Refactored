@@ -20,7 +20,7 @@ setup(
 	author='Florian Finke',
 	author_email='flo@randomknowledge.org',
 	license='MIT',
-	packages=['cactus', 'cactus.tasks'],
+	packages=['cactus', 'cactus.tasks', 'cactus.plugins', ],
     package_data=finddata.find_package_data(),
 	entry_points={
 		'console_scripts': [

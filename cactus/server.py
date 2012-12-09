@@ -1,16 +1,12 @@
 import os
 import sys
-
 import SimpleHTTPServer
 import SocketServer
-
 import mime
 
-# See: https://github.com/koenbok/Cactus/issues/8
-# class Server(SocketServer.ForkingMixIn, SocketServer.TCPServer):
-#	allow_reuse_address = True
 
-class Server(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
+class Server(SocketServer.ThreadingMixIn,
+             SocketServer.TCPServer):
     allow_reuse_address = True
 
 

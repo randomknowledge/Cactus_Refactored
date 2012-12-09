@@ -4,8 +4,7 @@ import logging
 
 from .utils import parseValues
 
-from django.template import Template, Context
-from django.template import loader as templateLoader
+from django.template import Template, Context, loader
 
 
 class Page(object):
@@ -34,7 +33,9 @@ class Page(object):
         context = self.site._contextCache
 
         # Relative url context
-        prefix = '/'.join(['..' for i in xrange(len(self.path.split('/')) - 1)]) or '.'
+        prefix = '/'.join(
+            ['..' for i in xrange(len(self.path.split('/')) - 1)]
+        ) or '.'
 
         context.update({
             'STATIC_URL': os.path.join(prefix, 'static'),
@@ -48,17 +49,21 @@ class Page(object):
 
     def render(self):
         """
-        Takes the template data with contect and renders it to the final output file.
+        Takes the template data with contect and renders it
+        to the final output file.
         """
 
         data = parseValues(self.data())[1]
         context = self.context()
 
-        # Run the prebuild plugins, we can't use the standard method here because
-        # plugins can chain-modify the context and data.
+        # Run the prebuild plugins, we can't use the standard
+        # method here because plugins can chain-modify the
+        # context and data.
         for plugin in self.site._plugins:
             if hasattr(plugin, 'preBuildPage'):
-                context, data = plugin.preBuildPage(self.site, self, context, data)
+                context, data = plugin.preBuildPage(
+                    self.site, self, context, data
+                )
 
         return Template(data).render(context)
 
@@ -71,8 +76,10 @@ class Page(object):
         data = self.render()
 
         # Make sure a folder for the output path exists
-        try: os.makedirs(os.path.dirname(self.paths['full-build']))
-        except OSError: pass
+        try:
+            os.makedirs(os.path.dirname(self.paths['full-build']))
+        except OSError:
+            pass
 
         # Write the data to the output file
         f = codecs.open(self.paths['full-build'], 'w', 'utf-8')
@@ -80,4 +87,5 @@ class Page(object):
         f.close()
 
         # Run all plugins
-        #self.site.pluginMethod('postBuildPage', self.site, self.paths['full-build'])
+        #self.site.pluginMethod('postBuildPage',
+        #    self.site, self.paths['full-build'])

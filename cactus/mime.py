@@ -1,6 +1,7 @@
 import os
 import mimetypes
 
+
 MIMETYPE_MAP = {
     '.js': 'text/javascript',
     '.mov': 'video/quicktime',
@@ -8,6 +9,7 @@ MIMETYPE_MAP = {
     '.m4v': 'video/x-m4v',
     '.3gp': 'video/3gpp',
 }
+
 
 def guess(path):
     base, ext = os.path.splitext(path)

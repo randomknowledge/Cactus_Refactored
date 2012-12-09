@@ -1,5 +1,4 @@
 import os
-import sys
 import time
 import thread
 
@@ -29,8 +28,7 @@ class Listener(object):
         return checksumMap
 
     def run(self):
-        # self._loop()
-        t = thread.start_new_thread(self._loop, ())
+        thread.start_new_thread(self._loop, ())
 
     def pause(self):
         self._pause = True
