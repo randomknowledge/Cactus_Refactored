@@ -274,10 +274,11 @@ class Site(object):
         """
         Run this method on all plugins
         """
-
+        cwd = os.getcwd()
         if not hasattr(self, '_plugins'):
             self.load_plugins()
 
         for plugin_name, plugin in self._plugins.iteritems():
             if hasattr(plugin, method):
                 getattr(plugin, method)(*args, **kwargs)
+        os.chdir(cwd)
