@@ -10,6 +10,7 @@
 common:
   plugins:
     - coffeescript
+    - sass
 
 #
 # Plugin specific settings
@@ -21,5 +22,6 @@ plugins:
     command: "coffee --join main.js --compile --output {dir_js} {files}"
 
   sass:
-    main_file:
-      - main.sass
+    main_file_sass: main.sass
+    main_file_css: main.css
+    command: "sass {input} {output}"
