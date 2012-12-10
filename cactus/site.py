@@ -33,7 +33,8 @@ class Site(object):
             'script': os.path.join(os.getcwd(), __file__)
         }
 
-        self._load_config()
+        if os.path.exists(os.path.join(self.path, "config.yml")):
+            self._load_config()
 
     def _load_config(self):
         try:

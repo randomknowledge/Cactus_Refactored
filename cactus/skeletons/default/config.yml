@@ -30,3 +30,18 @@ plugins:
   imageopti:
     command_png: "optipng {files}"
     command_jpg: "jpegoptim -o -t --strip-all {file}"
+
+#
+# Deployment settings
+# All settings can be overwritten in a file called deploy.yml
+# See deploy.yml.example for details
+# =========================
+deploy:
+  default:
+    type: ssh
+    host: some.host.name
+    port: 22
+    path: /path/to/project/on/remote/host
+	auth: "password|public-key"
+	user: username
+	private_key: "{home}/.ssh/id_rsa" #only neccessary for auth=public-key
