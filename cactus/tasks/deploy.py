@@ -108,11 +108,11 @@ class DeployTask(BaseTask):
                     password=getpass.getpass(prompt="Please enter your password: ")
                 )
 
-                scp = SCPClient(ssh.get_transport())
+            scp = SCPClient(ssh.get_transport())
 
-                dist_dir = site.paths['dist']
-                for file in os.listdir(dist_dir):
-                    f = os.path.join(dist_dir, file)
-                    scp.put(f, remote_path=cls.conf("path"), recursive=os.path.isdir(f))
+            dist_dir = site.paths['dist']
+            for file in os.listdir(dist_dir):
+                f = os.path.join(dist_dir, file)
+                scp.put(f, remote_path=cls.conf("path"), recursive=os.path.isdir(f))
         else:
             logging.warn("Deployment type '{0}' is not implemented!".format(deployment_type))
