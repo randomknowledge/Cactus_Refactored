@@ -3,3 +3,4 @@
 /static/css/main.css
 .tmp/
 dist/
+/deploy.yml

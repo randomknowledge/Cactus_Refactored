@@ -1,0 +1,110 @@
+# coding: utf-8
+import logging
+import re
+import os
+import paramiko
+from . import BaseTask
+from cactus.scp import SCPClient
+import yaml
+
+
+class DeployTask(BaseTask):
+    """
+    Deploy project
+    """
+
+    local_settings = {}
+    config = {}
+    helptext_short = "deploy [target] [--build=yes|no]: " \
+                     "deploy project to the given target."
+
+    @classmethod
+    def conf(cls, key, default=None):
+        return cls.local_settings.get(key, cls.config.get(key, default))
+
+    @classmethod
+    def run(cls, *args, **kwargs):
+        if len(args) > 2:
+            print cls.usage()
+            return
+
+        do_build = True
+        target = "default"
+        if len(args) > 1:
+            m1 = re.match(r'--build=(yes|no)', args[0], re.I)
+            m2 = re.match(r'--build=(yes|no)', args[1], re.I)
+            if m1:
+                target = args[1]
+                do_build = m1.group(1).lower() == "yes"
+            else:
+                target = args[0]
+                if m2:
+                    do_build = m2.group(1).lower() == "yes"
+        elif len(args) == 1:
+            m1 = re.match(r'--build=(yes|no)', args[0], re.I)
+            if m1:
+                do_build = m1.group(1).lower() == "yes"
+            else:
+                target = args[0]
+
+        try:
+            cls.local_settings = yaml.load(
+                open(os.path.join(os.getcwd(), "deploy.yml"), 'r')
+            ).get(target)
+        except Exception, e:
+            cls.local_settings = {}
+            logging.warn("No local deploy.yml present or error parsing it:\n{0}".format(e))
+
+        from cactus import site
+        site = site.Site(os.getcwd())
+        site.verify()
+        cls.config = site.config.get("deploy").get(target, "default")
+        deployment_type = cls.conf("type", "ssh")
+
+        def createSSHClient(server, port=22, user=None, password=None, privkey=None):
+            client = paramiko.SSHClient()
+            client.load_system_host_keys()
+            client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            client.connect(
+                server,
+                port=port,
+                username=user,
+                password=password,
+                key_filename=privkey,
+            )
+            return client
+
+        if do_build:
+            print "Building site..."
+            site.build(dist=True)
+        print u"Deploying to {0}...".format(target)
+
+        if deployment_type == "ssh":
+            host = cls.conf("host")
+            port = int(cls.conf("port", 22))
+            print "Connecting to {0}...".format(host)
+
+            auth_type = cls.conf("auth", "password")
+
+            try:
+                from win32com.shell import shellcon, shell
+                homedir = shell.SHGetFolderPath(0, shellcon.CSIDL_APPDATA, 0, 0)
+            except ImportError:
+                homedir = os.path.expanduser("~")
+
+            if auth_type == "public-key":
+                ssh = createSSHClient(
+                    host,
+                    port=port,
+                    user=cls.conf("user"),
+                    privkey=cls.conf("private_key", "{home}/.ssh/id_rsa").format(home=homedir),
+                )
+
+                scp = SCPClient(ssh.get_transport())
+
+                dist_dir = site.paths['dist']
+                for file in os.listdir(dist_dir):
+                    f = os.path.join(dist_dir, file)
+                    scp.put(f, remote_path=cls.conf("path"), recursive=os.path.isdir(f))
+        else:
+            logging.warn("Deployment type '{0}' is not implemented!".format(deployment_type))

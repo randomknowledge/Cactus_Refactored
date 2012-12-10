@@ -37,6 +37,7 @@ setup(
 	install_requires=[
 		'Django>=1.4.1,<=1.5.0',
         'PyYAML==3.10',
+        'paramiko==1.9.0',
 	],
 	zip_safe=False,
 	classifiers=[],
