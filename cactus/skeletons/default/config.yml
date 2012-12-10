@@ -26,7 +26,7 @@ plugins:
   sass:
     main_file_sass: main.sass
     main_file_css: main.css
-    command: "sass {input} {output}"
+    command: "sass -t compressed {input} {output}"
 
   imageopti:
     command_png: "optipng {files}"

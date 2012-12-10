@@ -102,10 +102,14 @@ class DeployTask(BaseTask):
                     privkey=cls.conf("private_key", "{home}/.ssh/id_rsa").format(home=homedir),
                 )
             else:
+                user = cls.conf("user")
+                if not user:
+                    user = raw_input("Please enter your username: ")
+
                 ssh = createSSHClient(
                     host,
                     port=port,
-                    user=cls.conf("user", raw_input("Please enter your username: ")),
+                    user=user,
                     password=getpass.getpass(prompt="Please enter your password: ")
                 )
 
