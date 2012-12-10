@@ -37,7 +37,9 @@ class Site(object):
 
     def _load_config(self):
         try:
-            self.config = yaml.load(open(os.path.join(self.path, "config.yml"), 'r'))
+            self.config = yaml.load(
+                open(os.path.join(self.path, "config.yml"), 'r')
+            )
         except:
             self.config = {}
 
@@ -77,8 +79,9 @@ class Site(object):
         def rebuild(changes):
             logging.info("*** Rebuilding ({0} changed)".format(self.path))
 
-            # We will pause the listener while building so scripts that alter the output
-            # like coffeescript and less don't trigger the listener again immediately.
+            # We will pause the listener while building so scripts
+            # that alter the output like coffeescript and less don't
+            # trigger the listener again immediately.
             self.listener.pause()
             try:
                 self.build()
@@ -89,7 +92,6 @@ class Site(object):
             browser.browserReload("http://localhost:{0}".format(port))
 
             self.listener.resume()
-
 
         from .listener import Listener
         from .server import Server, RequestHandler
@@ -239,9 +241,10 @@ class Site(object):
                 )
                 if not os.path.exists(path):
                     path = os.path.realpath(
-                        os.path.join(global_plugin_dir, "{0}.py".format(plugin))
+                        os.path.join(
+                            global_plugin_dir, "{0}.py".format(plugin)
+                        )
                     )
-
 
                 try:
                     i = imp.load_source('plugin_%s' % plugin, path)
@@ -251,9 +254,9 @@ class Site(object):
                     )
                 else:
                     for (member_name, member) in inspect.getmembers(i):
-                        if inspect.isclass(member)\
-                           and member_name != "CactusPluginBase"\
-                        and issubclass(member, CactusPluginBase):
+                        if (inspect.isclass(member) and
+                                member_name != "CactusPluginBase"
+                                and issubclass(member, CactusPluginBase)):
                             imported_plugins.update({plugin: member(self)})
         self._plugins = imported_plugins
 

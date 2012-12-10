@@ -10,7 +10,7 @@ class CoffeeScriptPlugin(CactusPluginBase):
         self.run()
 
     def postDist(self, *args, **kwargs):
-        self.run(dist = True)
+        self.run(dist=True)
 
     def run(self, *args, **kwargs):
         dist = kwargs.get("dist", False)
@@ -50,16 +50,20 @@ class CoffeeScriptPlugin(CactusPluginBase):
         files.sort(sort_by_buildorder)
 
         files = " ".join(map(lambda x: shell_escape(x), files))
-        coffee = self.config.get("command", "coffee --join main.js --compile --output {dir_js} {files}")
+        coffee = self.config.get(
+            "command",
+            "coffee --join main.js --compile --output {dir_js} {files}"
+        )
 
         cmd = coffee.format(
-                    dir_js = shell_escape(
-                        os.path.abspath(
-                            os.path.join(
-                                self.site.paths["dist" if dist else "build"], "static", "js"
-                            )
-                        )
-                    ), files = files
+            dir_js=shell_escape(
+                os.path.abspath(
+                    os.path.join(
+                        self.site.paths["dist" if dist else "build"],
+                        "static", "js"
+                    )
+                )
+            ), files=files
         )
 
         if os.name == "nt":

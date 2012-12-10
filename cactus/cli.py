@@ -36,9 +36,9 @@ def import_tasks():
                 else:
                     valid = False
                     for (member_name, member) in inspect.getmembers(i):
-                        if inspect.isclass(member)\
-                        and member_name != "BaseTask"\
-                        and issubclass(member, BaseTask):
+                        if (inspect.isclass(member)
+                                and member_name != "BaseTask"
+                                and issubclass(member, BaseTask)):
                             imported_tasks.update({mod: member})
                             valid = True
                     if not valid:

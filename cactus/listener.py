@@ -21,7 +21,7 @@ class Listener(object):
         for f in fileList(self.path):
             if f.startswith('.'):
                 continue
-            if self.ignore and self.ignore(f) == True:
+            if self.ignore and self.ignore(f) is True:
                 continue
             checksumMap[f] = int(os.stat(f).st_mtime)
 
@@ -40,7 +40,7 @@ class Listener(object):
     def _loop(self):
         self._checksums = self.checksums()
 
-        while True and self._pause == False:
+        while True and self._pause is False:
             self._run()
 
     @retry(Exception, tries=5, delay=0.5)
@@ -49,9 +49,9 @@ class Listener(object):
         newChecksums = self.checksums()
 
         result = {
-        'added': [],
-        'deleted': [],
-        'changed': [],
+            'added': [],
+            'deleted': [],
+            'changed': [],
         }
 
         for k, v in oldChecksums.iteritems():

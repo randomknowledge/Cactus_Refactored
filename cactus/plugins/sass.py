@@ -1,6 +1,6 @@
 # coding: utf-8
 import subprocess
-from cactus.utils import fileList, shell_escape
+from cactus.utils import shell_escape
 import os
 from cactus.plugin_base import CactusPluginBase
 
@@ -22,15 +22,18 @@ class SassPlugin(CactusPluginBase):
 
         main_file_sass = self.config.get("main_file_sass", "main.sass")
         main_file_css = self.config.get("main_file_css", "main.sass")
-        sass = self.config.get("command", "sass -t compressed {input} {output}")
+        sass = self.config.get(
+            "command",
+            "sass -t compressed {input} {output}"
+        )
 
         cmd = sass.format(
-            input = shell_escape(
+            input=shell_escape(
                 os.path.realpath(
                     os.path.join(sass_dir, main_file_sass)
                 )
             ),
-            output = shell_escape(
+            output=shell_escape(
                 os.path.realpath(
                     os.path.join(css_dir, main_file_css)
                 )

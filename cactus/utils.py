@@ -10,7 +10,7 @@ def fileList(paths, relative=False, folders=False):
     Generate a recursive list of files from a given path.
     """
 
-    if not type(paths) == types.ListType:
+    if not isinstance(paths, types.ListType):
         paths = [paths]
 
     files = []

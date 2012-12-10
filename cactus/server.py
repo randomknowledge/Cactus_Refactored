@@ -62,9 +62,9 @@ class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         tp = self.guess_type(path)
 
         headers = {
-        "Content-type": tp,
-        "Content-Length": str(fs[6]),
-        "Cache-Control": "no-cache, must-revalidate",
+            "Content-type": tp,
+            "Content-Length": str(fs[6]),
+            "Cache-Control": "no-cache, must-revalidate",
         }
 
         # Last-Modified", self.date_time_string(fs.st_mtime)
