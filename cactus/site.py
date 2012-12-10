@@ -49,6 +49,13 @@ class Site(object):
         """
 
         shutil.copytree(skeleton, self.path)
+        try:
+            shutil.move(
+                os.path.join(self.path, "_gitignore"),
+                os.path.join(self.path, ".gitignore")
+            )
+        except:
+            pass
         self._load_config()
 
     def verify(self):
