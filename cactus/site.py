@@ -9,7 +9,7 @@ import sys
 import os
 import yaml
 from cactus.page import Page
-from cactus.plugins import CactusPluginBase
+from cactus.plugin_base import CactusPluginBase
 from cactus.utils import fileList
 from cactus import browser
 
