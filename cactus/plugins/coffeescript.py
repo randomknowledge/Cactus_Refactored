@@ -10,9 +10,11 @@ class CoffeeScriptPlugin(CactusPluginBase):
         self.run()
 
     def postDist(self, *args, **kwargs):
-        self.run()
+        self.run(dist = True)
 
     def run(self, *args, **kwargs):
+        dist = kwargs.get("dist", False)
+
         coffeepath = os.path.realpath(
             os.path.join(
                 self.site.paths['static'], 'coffee'
@@ -54,7 +56,7 @@ class CoffeeScriptPlugin(CactusPluginBase):
                     dir_js = shell_escape(
                         os.path.abspath(
                             os.path.join(
-                                self.site.paths['build'], "static", "js"
+                                self.site.paths["dist" if dist else "build"], "static", "js"
                             )
                         )
                     ), files = files

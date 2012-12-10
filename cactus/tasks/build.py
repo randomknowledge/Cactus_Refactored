@@ -1,5 +1,6 @@
 # coding: utf-8
 from . import BaseTask
+import os
 
 
 class BuildTask(BaseTask):
@@ -11,4 +12,6 @@ class BuildTask(BaseTask):
 
     @classmethod
     def run(cls, *args, **kwargs):
-        print "Build called:", args
+        from cactus import site
+        site = site.Site(os.getcwd())
+        site.build(dist=True)

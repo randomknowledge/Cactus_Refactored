@@ -138,18 +138,25 @@ class Site(object):
 
         logging.info('Plugins: %s', ', '.join(self._plugins.keys()))
 
-        self.call_plugin_method("preBuild")
+        if dist:
+            self.call_plugin_method("preDist")
+        else:
+            self.call_plugin_method("preBuild")
 
         # Make sure the build path exists
         if not os.path.exists(buildpath):
             os.mkdir(buildpath)
 
         # Copy the static files
-        self.build_static()
+        self.build_static(dist=dist)
 
         # Render the pages to their output files
-        map(lambda p: p.build(), self.pages())
-        self.call_plugin_method("postBuild")
+        map(lambda p: p.build(dist=dist), self.pages())
+
+        if dist:
+            self.call_plugin_method("postDist")
+        else:
+            self.call_plugin_method("postBuild")
 
     def setup(self):
         """
@@ -185,19 +192,30 @@ class Site(object):
             }
         }
 
-    def build_static(self):
+    def build_static(self, dist=False):
         """
-        Move static files to build folder. To be fast we symlink it for now,
-        but we should actually copy these files in the future.
+        Copy static files to build folder.
         """
-        s = os.path.join(self.paths['build'], 'static')
+        buildpath = self.paths["dist" if dist else "build"]
+        s = os.path.join(buildpath, 'static')
 
         # If there is a folder, replace it with a symlink
-        if os.path.lexists(s) and not os.path.exists(s):
-            os.remove(s)
+        if os.path.exists(s):
+            shutil.rmtree(s)
 
-        if not os.path.lexists(s):
-            shutil.copytree(self.paths['static'], s)
+        def ignore_special(src, names):
+            bn = os.path.basename(src)
+            if bn == "static":
+                return ["coffee", "sass"]
+            return []
+
+        shutil.copytree(
+            self.paths['static'],
+            s,
+            ignore=ignore_special
+        )
+
+        #callable(src, names) -> ignored_names
 
     def load_plugins(self):
         imported_plugins = {}

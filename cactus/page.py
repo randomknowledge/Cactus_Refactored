@@ -15,7 +15,6 @@ class Page(object):
         self.paths = {
             'full': os.path.join(self.site.path, 'pages', self.path),
             # 'build': os.path.join('.build', self.path),
-            'full-build': os.path.join(site.paths['build'], self.path),
         }
 
     def data(self):
@@ -67,7 +66,7 @@ class Page(object):
 
         return Template(data).render(context)
 
-    def build(self):
+    def build(self, dist=False):
         """
         Save the rendered output to the output file.
         """
@@ -77,12 +76,26 @@ class Page(object):
 
         # Make sure a folder for the output path exists
         try:
-            os.makedirs(os.path.dirname(self.paths['full-build']))
+            os.makedirs(
+                os.path.dirname(
+                    os.path.join(
+                        self.site.paths["dist" if dist else "build"],
+                        self.path
+                    )
+                )
+            )
         except OSError:
             pass
 
         # Write the data to the output file
-        f = codecs.open(self.paths['full-build'], 'w', 'utf-8')
+        f = codecs.open(
+            os.path.join(
+                self.site.paths["dist" if dist else "build"],
+                self.path
+            ),
+            'w',
+            'utf-8'
+        )
         f.write(data)
         f.close()
 

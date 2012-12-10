@@ -10,11 +10,13 @@ class SassPlugin(CactusPluginBase):
         self.run()
 
     def postDist(self, *args, **kwargs):
-        self.run()
+        self.run(dist=True)
 
     def run(self, *args, **kwargs):
-        sass_dir = os.path.join(self.site.paths['build'], 'static', 'sass')
-        css_dir = os.path.join(self.site.paths['build'], 'static', 'css')
+        dist = kwargs.get("dist", False)
+        buildpath = "dist" if dist else "build"
+        sass_dir = os.path.join(self.site.paths['static'], 'sass')
+        css_dir = os.path.join(self.site.paths[buildpath], 'static', 'css')
         if not os.path.isdir(sass_dir) or not os.listdir(sass_dir):
             return
 
