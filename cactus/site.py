@@ -40,8 +40,9 @@ class Site(object):
             self.config = yaml.load(
                 open(os.path.join(self.path, "config.yml"), 'r')
             )
-        except:
+        except Exception, e:
             self.config = {}
+            logging.warn("Error parsing config.yml:\n{0}".format(e))
 
     def bootstrap(self, skeleton):
         """
@@ -236,6 +237,7 @@ class Site(object):
             os.path.join(os.path.dirname(__file__), "plugins")
         )
         plugins_to_load = None
+
         try:
             plugins_to_load = self.config.get("common").get("plugins", [])
         except:

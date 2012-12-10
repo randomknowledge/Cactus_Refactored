@@ -28,5 +28,5 @@ plugins:
     command: "sass {input} {output}"
 
   imageopti:
-	command_png: "optipng {files}"
-	command_jpg: "jpegoptim -o -t --strip-all {file}"
+    command_png: "optipng {files}"
+    command_jpg: "jpegoptim -o -t --strip-all {file}"
