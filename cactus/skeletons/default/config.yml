@@ -11,6 +11,7 @@ common:
   plugins:
     - coffeescript
     - sass
+    - imageopti
 
 #
 # Plugin specific settings
