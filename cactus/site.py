@@ -8,6 +8,7 @@ import webbrowser
 import sys
 import os
 import yaml
+import imp
 from cactus.page import Page
 from cactus.plugin_base import CactusPluginBase
 from cactus.utils import fileList
@@ -207,40 +208,35 @@ class Site(object):
         global_plugin_dir = os.path.realpath(
             os.path.join(os.path.dirname(__file__), "plugins")
         )
-        parentmodule = "cactus.plugins"
-        for plugin in self.config.get("common").get("plugins"):
-            path = os.path.realpath(
-                os.path.join(local_plugin_dir, "{0}.py".format(plugin))
-            )
-            if not os.path.exists(path):
+        plugins_to_load = None
+        try:
+            plugins_to_load = self.config.get("common").get("plugins", [])
+        except:
+            pass
+
+        if plugins_to_load:
+            for plugin in plugins_to_load:
                 path = os.path.realpath(
-                    os.path.join(global_plugin_dir, "{0}.py".format(plugin))
+                    os.path.join(local_plugin_dir, "{0}.py".format(plugin))
                 )
-            dsn = "{0}.{1}".format(parentmodule, plugin)
-            try:
-                del sys.modules[dsn]
-            except:
-                pass
-            try:
-                i = __import__(dsn, globals(), locals(), [parentmodule], -1)
-            except Exception:
-                logging.error(u"Failed to import Plugin {0}: {1}".format(
-                    plugin, traceback.format_exc())
-                )
-            else:
-                valid = False
-                for (member_name, member) in inspect.getmembers(i):
-                    if inspect.isclass(member)\
-                    and member_name != "CactusPluginBase"\
-                    and issubclass(member, CactusPluginBase):
-                        valid = True
-                        imported_plugins.update({plugin: member(self)})
-                if not valid:
-                    try:
-                        del sys.modules[dsn]
-                        del i
-                    except:
-                        pass
+                if not os.path.exists(path):
+                    path = os.path.realpath(
+                        os.path.join(global_plugin_dir, "{0}.py".format(plugin))
+                    )
+
+
+                try:
+                    i = imp.load_source('plugin_%s' % plugin, path)
+                except Exception:
+                    logging.error(u"Failed to import Plugin {0}: {1}".format(
+                        plugin, traceback.format_exc())
+                    )
+                else:
+                    for (member_name, member) in inspect.getmembers(i):
+                        if inspect.isclass(member)\
+                           and member_name != "CactusPluginBase"\
+                        and issubclass(member, CactusPluginBase):
+                            imported_plugins.update({plugin: member(self)})
         self._plugins = imported_plugins
 
     def call_plugin_method(self, method, *args, **kwargs):

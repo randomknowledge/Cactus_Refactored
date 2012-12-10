@@ -27,7 +27,7 @@ setup(
 	author='Florian Finke',
 	author_email='flo@randomknowledge.org',
 	license='MIT',
-	packages=['cactus', 'cactus.tasks', 'cactus.plugins', ],
+	packages=['cactus', 'cactus.tasks', ],
     package_data=package_data,
 	entry_points={
 		'console_scripts': [
