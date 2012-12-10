@@ -1,5 +1,6 @@
 # coding: utf-8
 import logging
+import getpass
 import re
 import os
 import paramiko
@@ -98,6 +99,13 @@ class DeployTask(BaseTask):
                     port=port,
                     user=cls.conf("user"),
                     privkey=cls.conf("private_key", "{home}/.ssh/id_rsa").format(home=homedir),
+                )
+            else:
+                ssh = createSSHClient(
+                    host,
+                    port=port,
+                    user=cls.conf("user", raw_input("Please enter your username: ")),
+                    password=getpass.getpass(prompt="Please enter your password: ")
                 )
 
                 scp = SCPClient(ssh.get_transport())
