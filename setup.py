@@ -21,7 +21,7 @@ setup(
 	author_email='flo@randomknowledge.org',
 	license='MIT',
 	packages=['cactus', 'cactus.tasks', 'cactus.plugins', ],
-    package_data=finddata.find_package_data(),
+    package_data=finddata.find_package_data(exclude=('*.py', '*.pyc', '*$py.class', '*~', '*.bak')),
 	entry_points={
 		'console_scripts': [
 			'cactus = cactus.cli:main',

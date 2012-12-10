@@ -32,7 +32,13 @@ class Site(object):
             'script': os.path.join(os.getcwd(), __file__)
         }
 
-        self.config = yaml.load(open(os.path.join(path, "config.yml"), 'r'))
+        self._load_config()
+
+    def _load_config(self):
+        try:
+            self.config = yaml.load(open(os.path.join(self.path, "config.yml"), 'r'))
+        except:
+            self.config = {}
 
     def bootstrap(self, skeleton):
         """
@@ -40,6 +46,7 @@ class Site(object):
         """
 
         shutil.copytree(skeleton, self.path)
+        self._load_config()
 
     def verify(self):
         """
