@@ -26,3 +26,7 @@ plugins:
     main_file_sass: main.sass
     main_file_css: main.css
     command: "sass {input} {output}"
+
+  imageopti:
+	command_png: "optipng {files}"
+	command_jpg: "jpegoptim -o -t --strip-all {file}"
