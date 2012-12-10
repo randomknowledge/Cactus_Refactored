@@ -36,8 +36,9 @@ class Page(object):
             ['..' for i in xrange(len(self.path.split('/')) - 1)]
         ) or '.'
 
+        print prefix
         context.update({
-            'STATIC_URL': os.path.join(prefix, 'static'),
+            'STATIC_URL': '{0}/static'.format(prefix),
             'ROOT_URL': prefix,
         })
 

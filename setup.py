@@ -38,6 +38,7 @@ setup(
 		'Django>=1.4.1,<=1.5.0',
         'PyYAML==3.10',
         'paramiko==1.9.0',
+        'slimit>=0.7.3,<=0.7.4',
 	],
 	zip_safe=False,
 	classifiers=[],

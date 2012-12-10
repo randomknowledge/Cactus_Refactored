@@ -11,6 +11,7 @@ ____
 * [Django](https://www.djangoproject.com/)
 * [PyYAML](http://pyyaml.org/)
 * [paramiko](http://www.lag.net/paramiko/)
+* [slimit](http://slimit.readthedocs.org/en/latest/)
 
 ## Installation
 

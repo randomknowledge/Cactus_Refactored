@@ -12,6 +12,7 @@ common:
     - coffeescript
     - sass
     - imageopti
+    - minifyjs
 
 #
 # Plugin specific settings
