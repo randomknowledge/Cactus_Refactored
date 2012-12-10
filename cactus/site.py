@@ -4,7 +4,6 @@ import logging
 import shutil
 import socket
 import traceback
-import webbrowser
 import sys
 import os
 import yaml
@@ -23,6 +22,7 @@ class Site(object):
     def __init__(self, path):
         self.path = path
         self._plugins = []
+        self.browser = None
 
         self.paths = {
             'build': os.path.join(path, '.tmp'),
@@ -98,7 +98,7 @@ class Site(object):
                 logging.info("*** Error while building\n{0}".format(e))
                 traceback.print_exc(file=sys.stdout)
 
-            browser.browserReload("http://localhost:{0}".format(port))
+            browser.browserReload("http://localhost:{0}".format(port), self)
 
             self.listener.resume()
 
@@ -114,7 +114,7 @@ class Site(object):
         except socket.error:
             logging.info("Could not start webserver, port is in use.")
             return
-        webbrowser.open("http://localhost:{0}".format(port))
+        browser.openurl("http://localhost:{0}".format(port), self)
 
         try:
             httpd.serve_forever()

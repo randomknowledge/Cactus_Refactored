@@ -12,6 +12,7 @@ ____
 * [PyYAML](http://pyyaml.org/)
 * [paramiko](http://www.lag.net/paramiko/)
 * [slimit](http://slimit.readthedocs.org/en/latest/)
+* [selenium](http://pypi.python.org/pypi/selenium)
 
 ## Installation
 
