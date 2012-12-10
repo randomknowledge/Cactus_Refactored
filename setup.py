@@ -8,8 +8,15 @@ Static site generation and deployment.
 :license: MIT
 """
 import finddata
-from setuptools import setup
+from setuptools import setup, os
 
+
+package_data = finddata.find_package_data(
+    exclude=('*.py', '*.pyc', '*$py.class', '*~', '*.bak')
+)
+
+for name in os.listdir('cactus/plugins'):
+    package_data["cactus"].append("plugins/{0}".format(name))
 
 setup(
 	name='Cactus',
@@ -21,7 +28,7 @@ setup(
 	author_email='flo@randomknowledge.org',
 	license='MIT',
 	packages=['cactus', 'cactus.tasks', 'cactus.plugins', ],
-    package_data=finddata.find_package_data(exclude=('*.py', '*.pyc', '*$py.class', '*~', '*.bak')),
+    package_data=package_data,
 	entry_points={
 		'console_scripts': [
 			'cactus = cactus.cli:main',

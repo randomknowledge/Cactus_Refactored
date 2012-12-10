@@ -1,9 +1,8 @@
 # coding: utf-8
-import pipes
 import subprocess
 from cactus.utils import fileList, shell_escape
 import os
-from cactus.plugins import CactusPluginBase
+from cactus.plugin_base import CactusPluginBase
 
 
 class CoffeeScriptPlugin(CactusPluginBase):
