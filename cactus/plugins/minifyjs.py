@@ -7,7 +7,7 @@ from cactus.plugin_base import CactusPluginBase
 from slimit import minify
 
 
-class SassPlugin(CactusPluginBase):
+class MinifyJsPlugin(CactusPluginBase):
     def postDist(self, *args, **kwargs):
         buildpath = "dist"
         js_dir = os.path.join(self.site.paths[buildpath], 'static', 'js')
