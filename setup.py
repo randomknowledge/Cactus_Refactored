@@ -7,16 +7,59 @@ Static site generation and deployment.
 :copyright: (c) 2012 Florian Finke.
 :license: MIT
 """
-import finddata
+import re
+import sys
 from setuptools import setup, os
+from setuptools.command.test import test as TestCommand
+import types
 
 
-package_data = finddata.find_package_data(
-    exclude=('*.py', '*.pyc', '*$py.class', '*~', '*.bak')
-)
+def fileList(paths, relative=False, folders=False):
+    """
+    Generate a recursive list of files from a given path.
+    """
+
+    if not isinstance(paths, types.ListType):
+        paths = [paths]
+
+    files = []
+
+    for path in paths:
+        for fileName in os.listdir(path):
+            if fileName.startswith('.'):
+                continue
+
+            filePath = os.path.join(path, fileName)
+
+            if os.path.isdir(filePath):
+                if folders:
+                    files.append(filePath)
+                files += fileList(filePath)
+            else:
+                files.append(filePath)
+
+        if relative:
+            files = map(lambda x: x[len(path) + 1:], files)
+    return files
+
+package_data = {
+    'cactus': map(lambda f: re.sub(r'^cactus\/', '', f), fileList("cactus/skeletons"))
+}
 
 for name in os.listdir('cactus/plugins'):
     package_data["cactus"].append("plugins/{0}".format(name))
+
+
+class Tox(TestCommand):
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        import tox
+        errno = tox.cmdline(self.test_args)
+        sys.exit(errno)
 
 setup(
 	name='Cactus',
@@ -29,7 +72,7 @@ setup(
 	license='MIT',
 	packages=['cactus', 'cactus.tasks', ],
     package_data=package_data,
-	entry_points={
+    entry_points={
 		'console_scripts': [
 			'cactus = cactus.cli:main',
 		],
@@ -41,6 +84,8 @@ setup(
         'slimit>=0.7.3,<=0.7.4',
         'selenium==2.27.0',
 	],
+    tests_require=['pytest', 'tox',],
+    cmdclass={'test': Tox},
 	zip_safe=False,
     classifiers=[
         #'Development Status :: 1 - Planning',
@@ -67,3 +112,4 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ]
 )
+

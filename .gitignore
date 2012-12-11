@@ -5,3 +5,4 @@ virtualenv/
 Cactus.egg-info/
 build/
 dist/
+.tox/
