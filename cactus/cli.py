@@ -54,6 +54,8 @@ def help(tasks):
     usage = "Usage: cactus [{0}]".format("|".join(tasks.keys()))
 
     print
+    print "Cactus Refactored Version {0}".format(cactus.VERSION)
+    print
     print usage
     print
 

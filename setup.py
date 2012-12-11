@@ -20,7 +20,7 @@ for name in os.listdir('cactus/plugins'):
 
 setup(
 	name='Cactus',
-	version="0.0.3",
+	version="0.1.0",
 	description="Static site generation and deployment.",
 	long_description=__doc__,
 	url='http://github.com/randomknowledge/Cactus',
