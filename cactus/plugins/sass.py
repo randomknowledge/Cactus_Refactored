@@ -40,6 +40,7 @@ class SassPlugin(CactusPluginBase):
             ),
         )
 
+        os.chdir(sass_dir)
         if os.name == "nt":
             subprocess.check_output(cmd, shell=True)
         else:

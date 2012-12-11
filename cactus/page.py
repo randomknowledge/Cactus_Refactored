@@ -37,7 +37,7 @@ class Page(object):
         ) or '.'
 
         context.update({
-            'STATIC_URL': os.path.join(prefix, 'static'),
+            'STATIC_URL': '{0}/static'.format(prefix),
             'ROOT_URL': prefix,
         })
 

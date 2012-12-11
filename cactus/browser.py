@@ -1,6 +1,9 @@
+import webbrowser
 import os
 import subprocess
 import platform
+from selenium import webdriver
+from threading import Thread
 
 
 s1 = """
@@ -57,8 +60,14 @@ def _insertJavascript(urlMatch, js):
             pass
 
 
-def browserReload(url):
-    _insertJavascript(url, "window.location.reload()")
+def browserReload(url, site):
+    if platform.system() != "Darwin":
+        if site.browser is None:
+            openurl(url, site)
+        else:
+            site.browser.refresh()
+    else:
+        _insertJavascript(url, "window.location.reload()")
 
 
 def appsRunning(l):
@@ -73,3 +82,25 @@ def appsRunning(l):
     for app in l:
         retval[app] = app in psdata
     return retval
+
+def openurl(url, site):
+    if platform.system() != "Darwin":
+        if site.browser is None:
+            t = Thread(target=init_selenium, args=(site, url,))
+            t.start()
+        else:
+            site.browser.get(url)
+    else:
+        webbrowser.open(url)
+
+def init_selenium(site, url):
+    b = site.config.get("common").get("browser", "chrome")
+    if b == "firefox":
+        site.browser = webdriver.Firefox()
+    elif b == "opera":
+        site.browser = webdriver.Opera()
+    elif b == "ie":
+        site.browser = webdriver.Ie()
+    else:
+        site.browser = webdriver.Chrome()
+    site.browser.get(url)

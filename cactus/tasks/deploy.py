@@ -78,6 +78,7 @@ class DeployTask(BaseTask):
         if do_build:
             print "Building site..."
             site.build(dist=True)
+            site.call_plugin_method("preDeploy")
         print u"Deploying to {0}...".format(target)
 
         if deployment_type == "ssh":
@@ -101,10 +102,14 @@ class DeployTask(BaseTask):
                     privkey=cls.conf("private_key", "{home}/.ssh/id_rsa").format(home=homedir),
                 )
             else:
+                user = cls.conf("user")
+                if not user:
+                    user = raw_input("Please enter your username: ")
+
                 ssh = createSSHClient(
                     host,
                     port=port,
-                    user=cls.conf("user", raw_input("Please enter your username: ")),
+                    user=user,
                     password=getpass.getpass(prompt="Please enter your password: ")
                 )
 
@@ -114,5 +119,6 @@ class DeployTask(BaseTask):
             for file in os.listdir(dist_dir):
                 f = os.path.join(dist_dir, file)
                 scp.put(f, remote_path=cls.conf("path"), recursive=os.path.isdir(f))
+            site.call_plugin_method("postDeploy")
         else:
             logging.warn("Deployment type '{0}' is not implemented!".format(deployment_type))

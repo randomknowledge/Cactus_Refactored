@@ -20,7 +20,7 @@ for name in os.listdir('cactus/plugins'):
 
 setup(
 	name='Cactus',
-	version="0.0.2",
+	version="0.0.3",
 	description="Static site generation and deployment.",
 	long_description=__doc__,
 	url='http://github.com/randomknowledge/Cactus',
@@ -38,6 +38,8 @@ setup(
 		'Django>=1.4.1,<=1.5.0',
         'PyYAML==3.10',
         'paramiko==1.9.0',
+        'slimit>=0.7.3,<=0.7.4',
+        'selenium==2.27.0',
 	],
 	zip_safe=False,
     classifiers=[

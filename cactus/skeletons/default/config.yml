@@ -12,6 +12,10 @@ common:
     - coffeescript
     - sass
     - imageopti
+    - minifyjs
+
+  # Choose one out of "chrome", "firefox", "opera" or "ie", not used when run in mac os x.
+  browser: "chrome"
 
 #
 # Plugin specific settings
@@ -25,7 +29,7 @@ plugins:
   sass:
     main_file_sass: main.sass
     main_file_css: main.css
-    command: "sass {input} {output}"
+    command: "sass -t compressed {input} {output}"
 
   imageopti:
     command_png: "optipng {files}"

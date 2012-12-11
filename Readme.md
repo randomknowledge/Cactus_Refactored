@@ -11,13 +11,15 @@ ____
 * [Django](https://www.djangoproject.com/)
 * [PyYAML](http://pyyaml.org/)
 * [paramiko](http://www.lag.net/paramiko/)
+* [slimit](http://slimit.readthedocs.org/en/latest/)
+* [selenium](http://pypi.python.org/pypi/selenium)
 
 ## Installation
 
-Download source and install package using pip (Version 0.0.2)
+Download source and install package using pip (Version 0.0.3)
 
 ```console
-$ pip install -e git+https://github.com/randomknowledge/Cactus_Refactored.git@v0.0.2#egg=Cactus
+$ pip install -e git+https://github.com/randomknowledge/Cactus_Refactored.git@v0.0.3#egg=Cactus
 ```
 
 Download source and install package using pip (Development version)
