@@ -84,7 +84,7 @@ setup(
         'slimit>=0.7.3,<=0.7.4',
         'selenium==2.27.0',
 	],
-    tests_require=['pytest', 'tox',],
+    tests_require=['tox',],
     cmdclass={'test': Tox},
 	zip_safe=False,
     classifiers=[
