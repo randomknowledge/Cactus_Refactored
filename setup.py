@@ -9,10 +9,9 @@ Static site generation and deployment.
 """
 import re
 import sys
-import platform
+
 from setuptools import setup, os
 from setuptools.command.test import test as TestCommand
-import types
 
 
 def fileList(paths, relative=False, folders=False):
@@ -20,7 +19,7 @@ def fileList(paths, relative=False, folders=False):
     Generate a recursive list of files from a given path.
     """
 
-    if not isinstance(paths, types.ListType):
+    if isinstance(paths, basestring):
         paths = [paths]
 
     files = []

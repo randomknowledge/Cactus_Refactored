@@ -1,7 +1,6 @@
 import pipes
 import subprocess
 import os
-import types
 import logging
 import time
 
@@ -11,7 +10,7 @@ def fileList(paths, relative=False, folders=False):
     Generate a recursive list of files from a given path.
     """
 
-    if not isinstance(paths, types.ListType):
+    if isinstance(paths, basestring):
         paths = [paths]
 
     files = []
