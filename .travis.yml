@@ -5,5 +5,5 @@ python:
 before_install:
   - gem update --system
   - gem install sass
-  - gem install coffee
+  - gem install coffee-script
 script: python setup.py test
