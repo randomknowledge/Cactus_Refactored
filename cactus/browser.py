@@ -2,7 +2,6 @@ import webbrowser
 import os
 import subprocess
 import platform
-from selenium import webdriver
 from threading import Thread
 
 
@@ -94,6 +93,7 @@ def openurl(url, site):
         webbrowser.open(url)
 
 def init_selenium(site, url):
+    from selenium import webdriver
     b = site.config.get("common").get("browser", "chrome")
     if b == "firefox":
         site.browser = webdriver.Firefox()

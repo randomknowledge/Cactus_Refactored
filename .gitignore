@@ -6,3 +6,4 @@ Cactus.egg-info/
 build/
 dist/
 .tox/
+tests/.tmp/

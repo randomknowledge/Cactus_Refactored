@@ -7,6 +7,8 @@ ____
 **`Cactus Refactored` is a (more or less) rewritten version of [Cactus](https://github.com/koenbok/)**
 
 ____
+[![Build Status](https://secure.travis-ci.org/randomknowledge/Cactus_Refactored.png?branch=master)](http://travis-ci.org/randomknowledge/Cactus_Refactored)
+
 ## Requirements
 * [Django](https://www.djangoproject.com/)
 * [PyYAML](http://pyyaml.org/)

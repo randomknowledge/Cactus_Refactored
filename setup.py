@@ -9,6 +9,7 @@ Static site generation and deployment.
 """
 import re
 import sys
+import platform
 from setuptools import setup, os
 from setuptools.command.test import test as TestCommand
 import types
@@ -50,6 +51,16 @@ for name in os.listdir('cactus/plugins'):
     package_data["cactus"].append("plugins/{0}".format(name))
 
 
+reqs = [
+    'Django>=1.4.1,<=1.5.0',
+    'PyYAML==3.10',
+    'paramiko==1.9.0',
+    'slimit>=0.7.3,<=0.7.4',
+]
+if platform.system() != "Darwin":
+    reqs.append('selenium==2.27.0')
+
+
 class Tox(TestCommand):
     def finalize_options(self):
         TestCommand.finalize_options(self)
@@ -77,13 +88,7 @@ setup(
 			'cactus = cactus.cli:main',
 		],
 	},
-	install_requires=[
-		'Django>=1.4.1,<=1.5.0',
-        'PyYAML==3.10',
-        'paramiko==1.9.0',
-        'slimit>=0.7.3,<=0.7.4',
-        'selenium==2.27.0',
-	],
+	install_requires=reqs,
     tests_require=['tox',],
     cmdclass={'test': Tox},
 	zip_safe=False,

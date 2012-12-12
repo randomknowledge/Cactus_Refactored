@@ -37,7 +37,6 @@ class CreateTask(BaseTask):
             print "Path {0} already exists!".format(path)
             sys.exit()
 
-        #os.makedirs(path)
         project_name = os.path.basename(path)
 
         from .. import site
