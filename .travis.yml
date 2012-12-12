@@ -2,4 +2,8 @@ language: python
 python:
   - "2.6"
   - "2.7"
+before_install:
+  - gem update --system
+  - gem install sass
+  - gem install coffee
 script: python setup.py test
