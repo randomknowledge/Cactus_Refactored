@@ -9,6 +9,7 @@ Static site generation and deployment.
 """
 import re
 import sys
+import platform
 
 from setuptools import setup, os
 from setuptools.command.test import test as TestCommand
