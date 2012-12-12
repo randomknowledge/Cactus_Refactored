@@ -1,4 +1,5 @@
 import pipes
+import subprocess
 import os
 import types
 import logging
@@ -98,3 +99,12 @@ def shell_escape(path):
         return '"{0}"'.format(path)
     else:
         return pipes.quote(path)
+
+def run_subprocess(cmd):
+    try:
+        output = subprocess.check_output(cmd, shell=True)
+    except AttributeError:
+        # fallback for Python 2.6
+        output = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+
+    return output

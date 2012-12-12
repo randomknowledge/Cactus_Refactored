@@ -1,6 +1,5 @@
 # coding: utf-8
-import subprocess
-from cactus.utils import fileList, shell_escape
+from cactus.utils import fileList, shell_escape, run_subprocess
 import os
 from cactus.plugin_base import CactusPluginBase
 
@@ -67,6 +66,6 @@ class CoffeeScriptPlugin(CactusPluginBase):
         )
 
         if os.name == "nt":
-            subprocess.check_output(cmd, shell=True)
+            run_subprocess(cmd)
         else:
             os.system(cmd)

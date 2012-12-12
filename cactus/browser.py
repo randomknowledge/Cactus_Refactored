@@ -1,6 +1,6 @@
 import webbrowser
+from cactus.utils import run_subprocess
 import os
-import subprocess
 import platform
 from threading import Thread
 
@@ -40,7 +40,7 @@ def applescript(input):
         return
 
     command = "osascript<<END%sEND" % input
-    return subprocess.check_output(command, shell=True)
+    return run_subprocess(command)
 
 
 def _insertJavascript(urlMatch, js):
@@ -71,12 +71,11 @@ def browserReload(url, site):
 
 def appsRunning(l):
     if os.name == "nt":
-        psdata = subprocess.check_output(
-            ['wmic', 'process', 'get', 'description'],
-            shell=True
+        psdata = run_subprocess(
+            ['wmic', 'process', 'get', 'description']
         )
     else:
-        psdata = subprocess.check_output(['ps aux'], shell=True)
+        psdata = run_subprocess(['ps aux'])
     retval = {}
     for app in l:
         retval[app] = app in psdata

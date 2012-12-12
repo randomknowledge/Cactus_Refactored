@@ -1,6 +1,5 @@
 # coding: utf-8
-import subprocess
-from cactus.utils import shell_escape
+from cactus.utils import shell_escape, run_subprocess
 import os
 from cactus.plugin_base import CactusPluginBase
 
@@ -42,6 +41,6 @@ class SassPlugin(CactusPluginBase):
 
         os.chdir(sass_dir)
         if os.name == "nt":
-            subprocess.check_output(cmd, shell=True)
+            run_subprocess(cmd)
         else:
             os.system(cmd)
