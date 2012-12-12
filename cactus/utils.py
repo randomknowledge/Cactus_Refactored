@@ -10,6 +10,12 @@ def fileList(paths, relative=False, folders=False):
     Generate a recursive list of files from a given path.
     """
 
+    try:
+        basestring
+    except NameError:
+        # Python 3
+        basestring = unicode = str
+
     if isinstance(paths, basestring):
         paths = [paths]
 
