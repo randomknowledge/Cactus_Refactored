@@ -29,8 +29,6 @@ def import_tasks():
                     i = __import__(dsn, globals(), locals(),
                                    [parentmodule], -1)
                 except Exception:
-                    print u"Failed to import Task {0}: {1}".format(
-                        mod, traceback.format_exc())
                     logger.error(u"Failed to import Task {0}: {1}".format(
                         mod, traceback.format_exc()))
                 else:
