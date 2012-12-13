@@ -20,7 +20,7 @@ class SassPlugin(CactusPluginBase):
             return
 
         main_file_sass = self.config.get("main_file_sass", "main.sass")
-        main_file_css = self.config.get("main_file_css", "main.sass")
+        main_file_css = self.config.get("main_file_css", "main.css")
         sass = self.config.get(
             "command",
             "sass -t compressed {input} {output}"
