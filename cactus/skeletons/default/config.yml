@@ -25,6 +25,8 @@ plugins:
     build_order:
       - main.coffee
     command: "coffee --join main.js --compile --output {dir_js} {files}"
+    # Windows example:
+    # command: '"C:/Program Files/nodejs/node.exe" "C:/Program Files/CoffeeScript/bin/coffee" --join main.js --compile --output {dir_js} {files}'
 
   sass:
     main_file_sass: main.sass
