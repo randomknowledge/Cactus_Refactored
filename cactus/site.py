@@ -88,29 +88,43 @@ class Site(object):
         def rebuild(changes):
             logging.info("*** Rebuilding ({0} changed)".format(self.path))
 
-            # We will pause the listener while building so scripts
-            # that alter the output like coffeescript and less don't
-            # trigger the listener again immediately.
-            self.listener.pause()
-            try:
-                self.build()
-            except Exception, e:
-                logging.info("*** Error while building\n{0}".format(e))
-                traceback.print_exc(file=sys.stdout)
+            reload_needed = False
+            rebuild_needed = False
+            for p in  changes.get('any', []):
+                if os.path.realpath(os.path.dirname(p)) == os.path.realpath(self.path):
+                    if os.path.basename(p) == "config.yml":
+                        reload_needed = True
+                        rebuild_needed = True
+                else:
+                    rebuild_needed = True
 
-            browser.browserReload("http://localhost:{0}".format(port), self)
+            if rebuild_needed:
+                # We will pause the listener while building so scripts
+                # that alter the output like coffeescript and less don't
+                # trigger the listener again immediately.
+                self.listener.pause()
+                try:
+                    if reload_needed:
+                        self._load_config()
+                        self.load_plugins()
+                    self.build()
+                except Exception, e:
+                    logging.info("*** Error while building\n{0}".format(e))
+                    traceback.print_exc(file=sys.stdout)
 
-            self.listener.resume()
+                browser.browserReload("http://localhost:{0}".format(port), self)
+
+                self.listener.resume()
 
         from .listener import Listener
         from .server import Server, RequestHandler
 
         self.listener = Listener(
-            self.path, rebuild, ignore=lambda x: '/.build/' in x
+            self.path, rebuild, ignore=lambda x: '/.tmp/' in x
         )
         self.listener.run()
         try:
-            httpd = Server(("", port), RequestHandler)
+            httpd = Server((host, port), RequestHandler)
         except socket.error:
             logging.info("Could not start webserver, port is in use.")
             return
