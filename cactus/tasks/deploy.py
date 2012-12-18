@@ -95,12 +95,21 @@ class DeployTask(BaseTask):
                 homedir = os.path.expanduser("~")
 
             if auth_type == "public-key":
-                ssh = createSSHClient(
-                    host,
-                    port=port,
-                    user=cls.conf("user"),
-                    privkey=cls.conf("private_key", "{home}/.ssh/id_rsa").format(home=homedir),
-                )
+                try:
+                    ssh = createSSHClient(
+                        host,
+                        port=port,
+                        user=cls.conf("user"),
+                        privkey=cls.conf("private_key", "{home}/.ssh/id_rsa").format(home=homedir),
+                    )
+                except paramiko.PasswordRequiredException:
+                    ssh = createSSHClient(
+                        host,
+                        port=port,
+                        user=cls.conf("user"),
+                        privkey=cls.conf("private_key", "{home}/.ssh/id_rsa").format(home=homedir),
+                        password=getpass.getpass(prompt="Please enter your password: "),
+                    )
             else:
                 user = cls.conf("user")
                 if not user:
