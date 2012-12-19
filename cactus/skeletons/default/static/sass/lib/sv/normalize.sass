@@ -1,248 +1,255 @@
+/*! normalize.css 2011-08-12T17:28 UTC · http://github.com/necolas/normalize.css */
+
+/*******************************************************************************
+ * HTML5 display definitions
+ ******************************************************************************/
+
 article, aside, details, figcaption, figure, footer, header, hgroup, nav, section
-  :display block
+  // Corrects block display not defined in IE6/7/8/9 & FF3
+  display: block
 
 audio, canvas, video
-  :display inline-block
-  :*display inline
-  :*zoom 1
+  // Corrects inline-block display not defined in IE6/7/8/9 & FF3
+  display: inline-block
+  *display: inline
+  *zoom: 1
 
 audio:not([controls])
-  :display none
+  // Prevents modern browsers from displaying 'audio' without controls
+  display: none
 
 [hidden]
-  :display none
+  // Addresses styling for 'hidden' attribute not present in IE7/8/9, FF3, S4
+  // Known issue: no IE6 support
+  display: none
+
+/*******************************************************************************
+ * Base
+ ******************************************************************************/
 
 html
-  :font-size 100%
-  :overflow-y scroll
-  :-webkit-text-size-adjust 100%
-  :-ms-text-size-adjust 100%
+  // Corrects text resizing oddly in IE6/7 when body font-size is in ems
+  font-size: 100%
+  // Keeps page centred in all browsers regardless of content height
+  overflow-y: scroll
+  // Prevents iOS text size adjust after orientation change, without disabling
+  // user zoom
+  -webkit-text-size-adjust: 100%
+  -ms-text-size-adjust: 100%
 
 body
-  :font-size 13px
-  :line-height 1.231
-  :margin 0
+  // Addresses margins handled incorrectly in IE6/7
+  margin: 0
 
 body, button, input, select, textarea
-  :font-family sans-serif
-  :color #222
+  // Addresses font-family inconsistency between 'textarea' and other form
+  // elements.
+  font-family: sans-serif
 
-  ::-moz-selection
-  :background #fe57a1
-  :color #fff
-  :text-shadow none
-
-  ::selection
-  :background #fe57a1
-  :color #fff
-  :text-shadow none
+/*******************************************************************************
+ * Links
+ ******************************************************************************/
 
 a
-  :color #004
+  color: #00e
   &:visited
-    :color #551a8b
-  &:hover
-    :color #06e
+    color: #551a8b
   &:focus
-    :outline thin dotted
+    // Addresses outline displayed oddly in Chrome
+    outline: thin dotted
+  &:hover, &:active
+    // Improves readability when focused and also mouse hovered in all browsers
+    // people.opera.com/patrickl/experiments/keyboard/test
+    outline: 0
+
+/*******************************************************************************
+ * Typography
+ ******************************************************************************/
 
 abbr[title]
-  :border-bottom 1px dotted
+  // Addresses styling not present in IE7/8/9, S5, Chrome
+  border-bottom: 1px dotted
 
-b,strong
-  :font-weight bold
-
-blockquote
-  :margin 1em 40px
+b, strong
+  // Addresses style set to 'bolder' in FF3/4, S4/5, Chrome
+  font-weight: bold
 
 dfn
-  :font-style italic
-
-hr
-  :border 0
-  :border-top 1px solid #ccc
-  :display block
-  :height 1px
-  :margin 1em 0
-  :padding 0
-
-ins
-  :background #ff9
-  :color #000
-  :text-decoration none
+  // Addresses styling not present in S5, Chrome
+  font-style: italic
 
 mark
-  :background #ff0
-  :color #000
-  :font-style italic
-  :font-weight bold
+  // Addresses styling not present in IE6/7/8/9
+  background: #ff0
+  color: #000
 
 pre, code, kbd, samp
-  :font-family monospace, monospace
-  :_font-family 'courier new', monospace
-  :font-size 1em
+  //  Corrects font family set oddly in IE6, S4/5, Chrome
+  // en.wikipedia.org/wiki/User:Davidgothberg/Test59
+  font-family: monospace, serif
+  _font-family: 'courier new', monospace
+  font-size: 1em
 
 pre
-  :white-space pre
-  :white-space pre-wrap
-  :word-wrap break-word
+  // Improves readability of pre-formatted text in all browsers
+  white-space: pre
+  white-space: pre-wrap
+  word-wrap: break-word
 
 q
-  :quotes none
-  &:before,&:after
-    :content ""
-    :content none
+  // Addresses CSS quotes not supported in IE6/7
+  quotes: none
+
+  // Addresses quote property not supported in S4
+  &:before, &:after
+    content: ''
+    content: none
 
 small
-  :font-size 85%
+  font-size: 75%
 
-sub, sup
-  :font-size 75%
-  :line-height 0
-  :position relative
-  :vertical-align baseline
+blockquote
+  margin: 1em 40px
 
-sup
-  :top -0.5em
-
+// Prevents sub and sup affecting line-height in all browsers
+// gist.github.com/413930
 sub
-  :bottom -0.25em
+  font-size: 75%
+  line-height: 0
+  position: relative
+  vertical-align: baseline
+sup
+  font-size: 75%
+  line-height: 0
+  position: relative
+  vertical-align: baseline
+  top: -0.5em
+sub
+  bottom: -0.25em
+
+/*******************************************************************************
+ * Lists
+ ******************************************************************************/
 
 ul, ol
-  :margin 1em 0
-  :padding 0 0 0 40px
+  margin: 1em 0
+  padding: 0 0 0 40px
 
 dd
-  :margin 0 0 0 40px
+  margin: 0 0 0 40px
 
-nav ul, nav ol
-  :list-style none
-  :list-style-image none
-  :margin 0
-  :padding 0
+nav
+  ul, ol
+    list-style: none
+    list-style-image: none
+
+/*******************************************************************************
+ * Embedded content
+ ******************************************************************************/
+
+/*
 
 img
-  :border 0
-  :-ms-interpolation-mode bicubic
-  :vertical-align middle
+  // Removes border when inside 'a' element in IE6/7/8/9
+  border: 0
+  // Improves image quality when scaled in IE7
+  // code.flickr.com/blog/2008/11/12/on-ui-quality-the-little-things-client-side-image-resizing/
+  -ms-interpolation-mode: bicubic
 
 svg:not(:root)
-  :overflow hidden
+  // Corrects overflow displayed oddly in IE9
+  overflow: hidden
+
+/*******************************************************************************
+ * Figures
+ ******************************************************************************/
 
 figure
-  :margin 0
+  // Addresses margin not present in IE6/7/8/9, S5, O11
+  margin: 0
+
+/*******************************************************************************
+ * Forms
+ ******************************************************************************/
 
 form
-  :margin 0
+  // Corrects margin displayed oddly in IE6/7
+  margin: 0
 
 fieldset
-  :border 0
-  :margin 0
-  :padding 0
-
-label
-  :cursor pointer
+  // Define consistent margin and padding
+  margin: 0 2px
+  padding: 0.35em 0.625em 0.75em
 
 legend
-  :border 0
-  :*margin-left -7px
-  :padding 0
+  // Corrects color not being inherited in IE6/7/8/9
+  border: 0
+  // Corrects alignment displayed oddly in IE6/7
+  *margin-left: -7px
 
 button, input, select, textarea
-  :font-size 100%
-  :margin 0
-  :vertical-align baseline
-  :*vertical-align middle
+  // Corrects font size not being inherited in all browsers
+  font-size: 100%
+  // Addresses margins set differently in IE6/7, F3/4, S5, Chrome
+  margin: 0
+  // Improves appearance and consistency in all browsers
+  vertical-align: baseline
+  *vertical-align: middle
 
 button, input
-  :line-height normal
-  :*overflow visible
-
-table button, table input
-  :*overflow auto
-
-button, input[type="button"], input[type="reset"], input[type="submit"]
-  :cursor pointer
-  :-webkit-appearance button
-
-input[type="checkbox"], input[type="radio"]
-  :box-sizing border-box
-
-input[type="search"]
-  :-webkit-appearance textfield
-  :-moz-box-sizing content-box
-  :-webkit-box-sizing content-box
-  :box-sizing content-box
-
-input[type="search"]::-webkit-search-decoration
-  :-webkit-appearance none
-
-button::-moz-focus-inner, input::-moz-focus-inner
-  :border 0
-  :padding 0
-
-textarea
-  :overflow auto
-  :resize vertical
-  :vertical-align top
-
-input:valid, textarea:valid
-  :color #000
-
-input:invalid, textarea:invalid
-  :background-color #f0dddd
+  // Addresses FF3/4 setting line-height using !important in the UA stylesheet
+  line-height: normal
+  // Corrects inner spacing displayed oddly in IE6/7
+  *overflow: visible
 
 table
-  :border-collapse collapse
-  :border-spacing 0
+  button, input
+    // Corrects overlap and whitespace issue for buttons and inputs in IE6/7
+    // Known issue: reintroduces inner spacing
+    *overflow: auto
 
-td
-  :vertical-align top
+button, html input[type="button"], html input[type="reset"], html input[type="submit"]
+  // Improves usability and consistency of cursor style between image-type
+  // 'input' and others
+  cursor: pointer
+  // Corrects inability to style clickable 'input' types in iOS
+  -webkit-appearance: button
 
-.ir
-  :background-color transparent
-  :background-repeat no-repeat
-  :border 0
-  :direction ltr
-  :display block
-  :overflow hidden
-  :text-indent -999em
-  :text-align left
+input
+  &[type="checkbox"], &[type="radio"]
+  // Addresses box sizing set to content-box in IE8/9
+  box-sizing: border-box
+  // Addresses excess padding in IE8/9
+  padding: 0
+  &[type="search"]
+  // Addresses appearance set to searchfield in S5, Chrome
+  -webkit-appearance: textfield
+  -moz-box-sizing: content-box
+  // Addresses box sizing set to border-box in S5, Chrome (Include -moz to
+  // future-proof)
+  -webkit-box-sizing: content-box
+  box-sizing: content-box
+  &::-webkit-search-decoration
+    // Corrects inner padding displayed oddly in S5, Chrome on OSX
+    -webkit-appearance: none
 
-.ir br
-  :display none
+button::-moz-focus-inner, input::-moz-focus-inner
+  // Corrects inner padding and border displayed oddly in FF3/4
+  // www.sitepen.com/blog/2008/05/14/the-devils-in-the-details-fixing-dojos-toolbar-buttons/
+  border: 0
+  padding: 0
 
-.hidden
-  :display none !important
-  :visibility hidden
+textarea
+  // remove default vertical scrollbar in IE6/7/8/9
+  overflow: auto
+  // improve readability and alignment in all browsers
+  vertical-align: top
 
-.visuallyhidden
-  :border 0
-  :clip rect(0 0 0 0)
-  :height 1px
-  :margin -1px
-  :overflow hidden
-  :padding 0
-  :position absolute
-  :width 1px
+/*******************************************************************************
+ * Tables
+ ******************************************************************************/
 
-.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus
-  :clip auto
-  :height auto
-  :margin 0
-  :overflow visible
-  :position static
-  :width auto
-
-.invisible
-  :visibility hidden
-
-.clearfix:before, .clearfix:after
-  :content ""
-  :display table
-
-.clearfix:after
-  :clear both
-
-.clearfix
-  :zoom 1
+table
+  // Remove most spacing between table cells
+  border-collapse: collapse
+  border-spacing: 0
