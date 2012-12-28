@@ -41,6 +41,15 @@ class Site(object):
             self.config = yaml.load(
                 open(os.path.join(self.path, "config.yml"), 'r')
             )
+
+            # Convert plugin commands for windows
+            if os.name == 'nt':
+                for key, pconf in self.config.get("plugins", {}).iteritems():
+                    cmd = pconf.get("command_windows")
+                    if cmd:
+                        self.config["plugins"][key]["command"] = cmd
+                        del self.config["plugins"][key]["command_windows"]
+
         except Exception, e:
             self.config = {}
             logging.warn("Error parsing config.yml:\n{0}".format(e))
