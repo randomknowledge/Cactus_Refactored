@@ -33,7 +33,7 @@ class Page(object):
 
         # Relative url context
         prefix = '/'.join(
-            ['..' for i in xrange(len(self.path.split('/')) - 1)]
+            ['..' for i in xrange(len(self.path.split(os.sep)) - 1)]
         ) or '.'
 
         context.update({
