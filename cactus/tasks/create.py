@@ -7,12 +7,12 @@ import os
 
 class CreateTask(BaseTask):
     """
-    Creates a new project at the given path.
     Optionally provide a skeleton name or path.
+    Builtin skeletons are 'default' and 'blog'.
     """
 
     helptext_short = "create <path> [<skeleton type>|<skeleton path>]: " \
-                     "Create a new website skeleton at path"
+                     "Create a new website skeleton at the given path."
 
     @classmethod
     def run(cls, *args, **kwargs):
