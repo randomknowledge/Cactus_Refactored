@@ -18,10 +18,10 @@ ____
 
 ## Installation
 
-Download source and install package using pip (Version 0.2.0)
+Download source and install package using pip (Version 0.3.0)
 
 ```console
-$ pip install -e git+https://github.com/randomknowledge/Cactus_Refactored.git@v0.2.0#egg=Cactus
+$ pip install -e git+https://github.com/randomknowledge/Cactus_Refactored.git@v0.3.0#egg=Cactus
 ```
 
 Download source and install package using pip (Development version)

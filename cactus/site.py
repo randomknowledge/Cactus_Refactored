@@ -10,6 +10,7 @@ import yaml
 import imp
 from cactus.page import Page
 from cactus.plugin_base import CactusPluginBase
+from cactus.contect_processor_base import ContextProcessorBase
 from cactus.utils import fileList
 from cactus import browser
 
@@ -22,6 +23,7 @@ class Site(object):
     def __init__(self, path):
         self.path = path
         self._plugins = []
+        self._context_processors = []
         self.browser = None
 
         self.paths = {
@@ -116,6 +118,7 @@ class Site(object):
                     if reload_needed:
                         self._load_config()
                         self.load_plugins()
+                        self.load_context_processors()
                     self.build()
                 except Exception, e:
                     logging.info("*** Error while building\n{0}".format(e))
@@ -164,18 +167,24 @@ class Site(object):
         self.setup()
 
         # Bust the context cache
-        self._contextCache = self.context()
+        self._contextCache = {}
 
         # Load the plugin code, because we want fresh plugin code on build
         # refreshes if we're running the web server with listen.
         self.load_plugins()
+        self.load_context_processors()
 
         logging.info('Plugins: %s', ', '.join(self._plugins.keys()))
+        logging.info('ContextProcessors: %s', ', '.join(self._context_processors.keys()))
 
         if dist:
             self.call_plugin_method("preDist")
         else:
             self.call_plugin_method("preBuild")
+
+        # Update context from context_processors
+        for processor in self._context_processors.values():
+            self._contextCache.update(processor.context())
 
         # Make sure the build path exists
         if not os.path.exists(buildpath):
@@ -213,18 +222,6 @@ class Site(object):
         paths = fileList(self.paths['pages'], relative=True)
         paths = filter(lambda x: not x.endswith("~"), paths)
         return [Page(self, p) for p in paths]
-
-    def context(self):
-        """
-        Base context for the site: all the html pages.
-        """
-        return {
-            'CACTUS': {
-                'pages': [
-                    p for p in self.pages() if p.path.endswith('.html')
-                ]
-            }
-        }
 
     def build_static(self, dist=False):
         """
@@ -292,6 +289,49 @@ class Site(object):
                                 and issubclass(member, CactusPluginBase)):
                             imported_plugins.update({plugin: member(self)})
         self._plugins = imported_plugins
+
+
+    def load_context_processors(self):
+        imported_processors = {}
+
+        local_processor_dir = os.path.realpath(
+            os.path.join(self.path, "context_processors")
+        )
+        global_processor_dir = os.path.realpath(
+            os.path.join(os.path.dirname(__file__), "context_processors")
+        )
+        processors_to_load = None
+
+        try:
+            processors_to_load = self.config.get("common").get("context_processors", [])
+        except:
+            pass
+
+        if processors_to_load:
+            for processor in processors_to_load:
+                path = os.path.realpath(
+                    os.path.join(local_processor_dir, "{0}.py".format(processor))
+                )
+                if not os.path.exists(path):
+                    path = os.path.realpath(
+                        os.path.join(
+                            global_processor_dir, "{0}.py".format(processor)
+                        )
+                    )
+
+                try:
+                    i = imp.load_source('context_processors_%s' % processor, path)
+                except Exception:
+                    logging.error(u"Failed to import Plugin {0}: {1}".format(
+                        processor, traceback.format_exc())
+                    )
+                else:
+                    for (member_name, member) in inspect.getmembers(i):
+                        if (inspect.isclass(member) and
+                                member_name != "ContextProcessorBase"
+                                and issubclass(member, ContextProcessorBase)):
+                            imported_processors.update({processor: member(self)})
+        self._context_processors = imported_processors
 
     def call_plugin_method(self, method, *args, **kwargs):
         """

@@ -56,6 +56,9 @@ package_data = {
 for name in os.listdir('cactus/plugins'):
     package_data["cactus"].append("plugins/{0}".format(name))
 
+for name in os.listdir('cactus/context_processors'):
+    package_data["cactus"].append("context_processors/{0}".format(name))
+
 
 reqs = [
     'Django>=1.4.1,<=1.5.0',
@@ -80,7 +83,7 @@ class Tox(TestCommand):
 
 setup(
 	name='Cactus',
-	version="0.2.0",
+	version="0.3.0",
 	description="Static site generation and deployment.",
 	long_description=__doc__,
 	url='http://github.com/randomknowledge/Cactus',
