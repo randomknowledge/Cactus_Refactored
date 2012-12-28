@@ -186,6 +186,9 @@ class Site(object):
         for processor in self._context_processors.values():
             self._contextCache.update(processor.context())
 
+        # Update context from plugins
+        self._contextCache.update(self.get_plugin_contexts())
+
         # Make sure the build path exists
         if not os.path.exists(buildpath):
             os.mkdir(buildpath)
@@ -345,3 +348,14 @@ class Site(object):
             if hasattr(plugin, method):
                 getattr(plugin, method)(*args, **kwargs)
         os.chdir(cwd)
+
+    def get_plugin_contexts(self, *args, **kwargs):
+        if not hasattr(self, '_plugins'):
+            self.load_plugins()
+        ctx = {}
+        for plugin_name, plugin in self._plugins.iteritems():
+            if hasattr(plugin, "templateContext"):
+                ctx[plugin_name] = plugin.templateContext(*args, **kwargs)
+        return {
+            "plugins": ctx
+        }

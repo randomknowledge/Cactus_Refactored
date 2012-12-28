@@ -29,3 +29,6 @@ class CactusPluginBase(object):
 
     def postDeploy(self, *args, **kwargs):
         pass
+
+    def templateContext(self, *args, **kwargs):
+        return {}

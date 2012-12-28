@@ -39,7 +39,7 @@ class Page(object):
         context.update({
             'STATIC_URL': '{0}/static'.format(prefix),
             'ROOT_URL': prefix,
-            'URL': self.path,
+            'URL': self.path.replace(os.sep, "/"),
         })
 
         # Page context (parse header)
