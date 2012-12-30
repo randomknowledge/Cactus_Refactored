@@ -1,4 +1,5 @@
 # Cactus Refactored
+[![Build Status](https://travis-ci.org/randomknowledge/Cactus_Refactored.png?branch=master)](https://travis-ci.org/randomknowledge/Cactus_Refactored)
 ___
 `Cactus Refactored` is a static website generator using [Python](http://www.python.org/)
 and the [Django template system](https://docs.djangoproject.com/en/dev/topics/templates/).
@@ -20,7 +21,6 @@ By now `Cactus Refactored` has the following features:
 * completely configurable via [YAML](http://de.wikipedia.org/wiki/YAML). See [config.yml](https://github.com/randomknowledge/Cactus_Refactored/blob/master/cactus/skeletons/default/config.yml) for details.
 
 ____
-[![Build Status](https://travis-ci.org/randomknowledge/Cactus_Refactored.png?branch=master)](https://travis-ci.org/randomknowledge/Cactus_Refactored)
 
 ## Requirements
 * [Django](https://www.djangoproject.com/)
