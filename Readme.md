@@ -42,7 +42,7 @@ $ sudo easy_install pip
 Download source and install package using pip (Version 1.0.0):
 
 ```console
-$ sudo pip install -e git+https://github.com/randomknowledge/Cactus_Refactored.git@v1.0.0#egg=Cactus
+$ sudo pip install -e git+https://github.com/randomknowledge/Cactus_Refactored.git@1-0-stable#egg=Cactus
 ```
 
 Download source and install package using pip (Development version):
@@ -82,7 +82,7 @@ To activate custom plugins inside your project, add them to a directory named `p
 
 With Context Processors you can add custom variables to the template context. Those variables can then be accessed from inside your templates.
 
-To activate custom template processors inside your project, add them to a directory named `context_processors` inside your project directory. The context-processor's filename must be unique and the file must contain a class that extends [ContextProcessorBase](https://github.com/randomknowledge/Cactus_Refactored/blob/master/cactus/contect_processor_base.py). Have a look at the [default context processor](https://github.com/randomknowledge/Cactus_Refactored/blob/master/cactus/context_processors/default.py) for a simple example.
+To activate custom template processors inside your project, add them to a directory named `context_processors` inside your project directory. The context-processor's filename must be unique and the file must contain a class that extends [ContextProcessorBase](https://github.com/randomknowledge/Cactus_Refactored/blob/master/cactus/context_processor_base.py). Have a look at the [default context processor](https://github.com/randomknowledge/Cactus_Refactored/blob/master/cactus/context_processors/default.py) for a simple example.
 
 Plugins also have their own template context (wich is empty by default). Just override `templateContext` inside a plugin and make sure it returns a dictionary. Plugin contexts are automatically namespaces to `plugins.<plugin_name>`.
 
