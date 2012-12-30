@@ -18,6 +18,7 @@ By now `Cactus Refactored` has the following features:
 	* imageopti (lossless image compression for png, gif and jpg files)
 	* minify JS
 	* Blog
+* custom template context processors (see [context_processors/default.py](https://github.com/randomknowledge/Cactus_Refactored/blob/master/cactus/context_processors/default.py) for an example)
 * completely configurable via [YAML](http://de.wikipedia.org/wiki/YAML). See [config.yml](https://github.com/randomknowledge/Cactus_Refactored/blob/master/cactus/skeletons/default/config.yml) for details.
 
 ____
@@ -50,7 +51,6 @@ Download source and install package using pip (Development version):
 $ sudo pip install -e git+https://github.com/randomknowledge/Cactus_Refactored.git#egg=Cactus
 ```
 
-
 ## Using `Cactus Refactored`
 
 ```console
@@ -71,4 +71,56 @@ $ cd www.mywebsite.com
 $ cactus serve
 <CTRL>+C
 $ cactus build
+```
+
+## Custom Plugins
+
+To activate custom plugins inside your project, add them to a directory named `plugins` inside your project directory. The plugin filename must be unique and the file must contain a class that extends [CactusPluginBase](https://github.com/randomknowledge/Cactus_Refactored/blob/master/cactus/plugin_base.py). Have a look at the [minifyjs plugin](https://github.com/randomknowledge/Cactus_Refactored/blob/master/cactus/plugins/minifyjs.py) for a simple example.
+
+
+## Custom Context Processors
+
+With Context Processors you can add custom variables to the template context. Those variables can then be accessed from inside your templates.
+
+To activate custom template processors inside your project, add them to a directory named `context_processors` inside your project directory. The context-processor's filename must be unique and the file must contain a class that extends [ContextProcessorBase](https://github.com/randomknowledge/Cactus_Refactored/blob/master/cactus/contect_processor_base.py). Have a look at the [default context processor](https://github.com/randomknowledge/Cactus_Refactored/blob/master/cactus/context_processors/default.py) for a simple example.
+
+Plugins also have their own template context (wich is empty by default). Just override `templateContext` inside a plugin and make sure it returns a dictionary. Plugin contexts are automatically namespaces to `plugins.<plugin_name>`.
+
+__Plugin context example__
+
+```python
+# file: plugins/mycustomplugin.py
+class MyCustomPlugin(CactusPluginBase):
+	def templateContext(self, *args, **kwargs):
+		return {
+			"name": "World"
+		}
+```
+
+```html
+<html>
+<body>
+Hello {{ plugins.mycustomplugin.name }}!
+</body>
+</html>
+```
+
+
+__custom template context example__
+
+```python
+# file: context_processors/customcontext.py
+class MyCustomContext(ContextProcessorBase):
+	def context(self):
+		return {
+			"name": "World"
+		}
+```
+
+```html
+<html>
+<body>
+Hello {{ name }}!
+</body>
+</html>
 ```

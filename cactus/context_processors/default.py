@@ -1,5 +1,5 @@
 # coding: utf-8
-from cactus.contect_processor_base import ContextProcessorBase
+from cactus.context_processor_base import ContextProcessorBase
 
 
 class DefaultContextProcessor(ContextProcessorBase):

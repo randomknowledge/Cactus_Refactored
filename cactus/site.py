@@ -10,7 +10,7 @@ import yaml
 import imp
 from cactus.page import Page
 from cactus.plugin_base import CactusPluginBase
-from cactus.contect_processor_base import ContextProcessorBase
+from cactus.context_processor_base import ContextProcessorBase
 from cactus.utils import fileList
 from cactus import browser
 
