@@ -2,7 +2,6 @@
 import glob
 from cactus.page import Page
 import os
-import BeautifulSoup
 from cactus.plugin_base import CactusPluginBase
 
 
@@ -27,26 +26,7 @@ class BlogPlugin(CactusPluginBase):
             pages_ctx["posts"].append({
                 "url": "/" + post_url,
                 "url_rel": post_url,
-                "title": self.get_post_title(post),
+                "title": Page(self.site, post).title()
             })
 
         return pages_ctx
-
-    def get_post_title(self, post):
-        page = Page(self.site, post)
-        title = None
-        try:
-            soup = BeautifulSoup.BeautifulSoup(page.render())
-            title = soup.title.string
-        except Exception:
-            pass
-
-        if not title:
-            title, _ = os.path.splitext(os.path.basename(post))
-            if title.lower() == "index":
-                title = os.path.basename(
-                    os.path.realpath(
-                        os.path.dirname(post)
-                    )
-                )
-        return title

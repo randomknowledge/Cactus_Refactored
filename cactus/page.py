@@ -1,3 +1,4 @@
+import BeautifulSoup
 import os
 import codecs
 import logging
@@ -11,11 +12,17 @@ class Page(object):
     def __init__(self, site, path):
         self.site = site
         self.path = path
+        self._title = None
 
         self.paths = {
             'full': os.path.join(self.site.path, 'pages', self.path),
             # 'build': os.path.join('.build', self.path),
         }
+
+        self.url_prefix = '/'.join(
+            ['..' for i in xrange(len(self.path.split(os.sep)) - 1)]
+        ) or '.'
+
 
     def data(self):
         f = codecs.open(self.paths['full'], 'r', 'utf-8')
@@ -31,14 +38,9 @@ class Page(object):
         # Site context
         context = self.site._contextCache
 
-        # Relative url context
-        prefix = '/'.join(
-            ['..' for i in xrange(len(self.path.split(os.sep)) - 1)]
-        ) or '.'
-
         context.update({
-            'STATIC_URL': '{0}/static'.format(prefix),
-            'ROOT_URL': prefix,
+            'STATIC_URL': '{0}/static'.format(self.url_prefix),
+            'ROOT_URL': self.url_prefix,
             'URL': self.path.replace(os.sep, "/"),
         })
 
@@ -103,3 +105,35 @@ class Page(object):
         # Run all plugins
         #self.site.pluginMethod('postBuildPage',
         #    self.site, self.paths['full-build'])
+
+    def title(self):
+        if self._title:
+            return self._title
+
+        t = None
+        try:
+            soup = BeautifulSoup.BeautifulSoup(self.render())
+            t = soup.title.string
+        except Exception:
+            pass
+
+        if not t:
+            t, _ = os.path.splitext(os.path.basename(self.path))
+            if t.lower() == "index":
+                t = os.path.basename(
+                    os.path.realpath(
+                        os.path.dirname(self.path)
+                    )
+                )
+        self._title = t
+        return t
+
+    def url_rel(self):
+        return self.path
+
+
+    def url_abs(self):
+        return "/{0}".format(self.path)
+
+    def url(self):
+        return self.url_abs()

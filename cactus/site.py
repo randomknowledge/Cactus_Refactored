@@ -24,6 +24,7 @@ class Site(object):
         self.path = path
         self._plugins = []
         self._context_processors = []
+        self._contextCache = {}
         self.browser = None
 
         self.paths = {
