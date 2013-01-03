@@ -1,9 +1,0 @@
-<nav>
-	<nav>
-		<ul>
-			{% for page in CACTUS.pages %}
-				<li{% if page.url_rel == URL %} class="active"{% endif %}><a href="{{ page.url }}">{{ page.title }}</a></li>
-			{% endfor %}
-		</ul>
-	</nav>
-</nav>

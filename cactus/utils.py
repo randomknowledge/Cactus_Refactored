@@ -1,5 +1,6 @@
 import pipes
 import subprocess
+from django.template.defaultfilters import slugify
 import os
 import logging
 import time
@@ -113,3 +114,8 @@ def run_subprocess(cmd):
         output = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
 
     return output
+
+
+def template_escape_path(path):
+    path, _ = os.path.splitext(path)
+    return slugify(path.replace("/", "_").replace("-", "_"))

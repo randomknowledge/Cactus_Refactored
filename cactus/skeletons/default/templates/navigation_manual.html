@@ -1,0 +1,8 @@
+<nav>
+    <ul>
+        <!-- Index Page -->
+        <li{% if CACTUS.pages_by_path.index.url_rel == URL %} class="active"{% endif %}><a href="{{ CACTUS.pages_by_path.index.url }}">{{ CACTUS.pages_by_path.index.title }}</a></li>
+        <!-- Another Page -->
+        <li{% if CACTUS.pages_by_path.another_page.url_rel == URL %} class="active"{% endif %}><a href="{{ CACTUS.pages_by_path.another_page.url }}">{{ CACTUS.pages_by_path.another_page.title }}</a></li>
+    </ul>
+</nav>
