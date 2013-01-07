@@ -131,7 +131,7 @@ class Site(object):
                     exts = set(map(lambda x: os.path.splitext(x)[1], changes["changed"]))
                     cssonly = True
                     for ext in exts:
-                        if not re.match(r'\.(?:css|sass|scss)$', ext, re.I):
+                        if not re.match(r'\.(?:css|sass|scss|less)$', ext, re.I):
                             cssonly = False
                 if cssonly:
                     browser.browserReloadCSS("http://localhost:{0}".format(port), self)
@@ -252,7 +252,7 @@ class Site(object):
         def ignore_special(src, names):
             bn = os.path.basename(src)
             if bn == "static":
-                return ["coffee", "sass"]
+                return ["coffee", "sass", "scss", "less"]
             return []
 
         shutil.copytree(

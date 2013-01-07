@@ -10,7 +10,7 @@
 common:
   plugins:
     - coffeescript
-    - sass
+    - sass # sass plugin can also handle scss (see "sass" section below).
     - imageopti
     - minifyjs
     # - blog
@@ -33,9 +33,13 @@ plugins:
     command_windows: '"C:/Program Files/nodejs/node.exe" "C:/Program Files/CoffeeScript/bin/coffee" --join main.js --compile --output {dir_js} {files}'
 
   sass:
+    type: sass # choose "sass" or "scss"
     main_file_sass: main.sass
+    main_file_scss: main.scss
     main_file_css: main.css
     command: "sass -t compressed {input} {output}"
+    # Uncomment for scss
+    # command: "scss -t compressed {input} {output}"
 
   imageopti:
     command_png: "optipng {files}"
