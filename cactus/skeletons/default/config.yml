@@ -11,6 +11,7 @@ common:
   plugins:
     - coffeescript
     - sass # sass plugin can also handle scss (see "sass" section below).
+    # - less # Only choose sass OR less, not both!
     - imageopti
     - minifyjs
     # - blog
@@ -40,6 +41,11 @@ plugins:
     command: "sass -t compressed {input} {output}"
     # Uncomment for scss
     # command: "scss -t compressed {input} {output}"
+
+  less:
+    main_file_less: main.less
+    main_file_css: main.css
+    command: "lessc {input} {output}"
 
   imageopti:
     command_png: "optipng {files}"
