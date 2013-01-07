@@ -14,7 +14,7 @@ By now `Cactus Refactored` has the following features:
 * deploy projects via SSH (public key auth and simple password auth are supported)
 * extendable via plugins (builtin and custom). Builtin plugins are:
 	* Coffeescript
-	* Sass/ScSS
+	* Sass/Scss
 	* Less
 	* imageopti (lossless image compression for png, gif and jpg files)
 	* minify JS
