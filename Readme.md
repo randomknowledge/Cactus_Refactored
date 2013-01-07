@@ -39,7 +39,7 @@ Install [pip](http://pypi.python.org/pypi/pip):
 $ sudo easy_install pip
 ```
 
-Download source and install package using pip (Version 1.0.0):
+Download source and install package using pip (Version 1.0 Stable):
 
 ```console
 $ sudo pip install -e git+https://github.com/randomknowledge/Cactus_Refactored.git@1-0-stable#egg=Cactus

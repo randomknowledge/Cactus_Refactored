@@ -1,6 +1,7 @@
 # coding: utf-8
 import inspect
 import logging
+import re
 import shutil
 import socket
 import traceback
@@ -125,7 +126,17 @@ class Site(object):
                     logging.info("*** Error while building\n{0}".format(e))
                     traceback.print_exc(file=sys.stdout)
 
-                browser.browserReload("http://localhost:{0}".format(port), self)
+                cssonly = False
+                if len(changes["added"]) == 0 and len(changes["deleted"]) == 0:
+                    exts = set(map(lambda x: os.path.splitext(x)[1], changes["changed"]))
+                    cssonly = True
+                    for ext in exts:
+                        if not re.match(r'\.(?:css|sass|scss)$', ext, re.I):
+                            cssonly = False
+                if cssonly:
+                    browser.browserReloadCSS("http://localhost:{0}".format(port), self)
+                else:
+                    browser.browserReload("http://localhost:{0}".format(port), self)
 
                 self.listener.resume()
 

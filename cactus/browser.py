@@ -69,6 +69,13 @@ def browserReload(url, site):
         _insertJavascript(url, "window.location.reload()")
 
 
+def browserReloadCSS(url, site):
+    if platform.system() != "Darwin":
+        browserReload(url, site)
+    else:
+        _insertJavascript(url, "var links = document.getElementsByTagName('link'); for (var i = 0; i < links.length;i++) { var link = links[i]; if (link.rel === 'stylesheet') {link.href += '?'; }}")
+
+
 def appsRunning(l):
     if os.name == "nt":
         psdata = run_subprocess(
