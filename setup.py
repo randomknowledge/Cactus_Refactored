@@ -59,6 +59,9 @@ for name in os.listdir('cactus/plugins'):
 for name in os.listdir('cactus/context_processors'):
     package_data["cactus"].append("context_processors/{0}".format(name))
 
+for name in os.listdir('cactus/tests'):
+    package_data["cactus"].append("tests/{0}".format(name))
+
 
 reqs = [
     'Django>=1.4.1,<=1.5.0',

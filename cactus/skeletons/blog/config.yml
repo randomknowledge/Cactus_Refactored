@@ -19,6 +19,9 @@ common:
   context_processors:
     - default
 
+  tests:
+    - console_log
+
   # Choose one out of "chrome", "firefox", "opera" or "ie", not used when run in mac os x.
   browser: "chrome"
 

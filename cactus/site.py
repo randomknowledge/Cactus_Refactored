@@ -1,6 +1,7 @@
 # coding: utf-8
 import inspect
 import logging
+from cactus.test_base import CactusTestBase
 import re
 import shutil
 import socket
@@ -25,6 +26,7 @@ class Site(object):
         self.path = path
         self._plugins = []
         self._context_processors = []
+        self._tests = []
         self._contextCache = {}
         self.browser = None
 
@@ -185,6 +187,7 @@ class Site(object):
         # refreshes if we're running the web server with listen.
         self.load_plugins()
         self.load_context_processors()
+        self.load_tests()
 
         logging.info('Plugins: %s', ', '.join(self._plugins.keys()))
         logging.info('ContextProcessors: %s', ', '.join(self._context_processors.keys()))
@@ -264,89 +267,58 @@ class Site(object):
         #callable(src, names) -> ignored_names
 
     def load_plugins(self):
-        imported_plugins = {}
-
-        local_plugin_dir = os.path.realpath(
-            os.path.join(self.path, "plugins")
-        )
-        global_plugin_dir = os.path.realpath(
-            os.path.join(os.path.dirname(__file__), "plugins")
-        )
-        plugins_to_load = None
-
-        try:
-            plugins_to_load = self.config.get("common").get("plugins", [])
-        except:
-            pass
-
-        if plugins_to_load:
-            for plugin in plugins_to_load:
-                path = os.path.realpath(
-                    os.path.join(local_plugin_dir, "{0}.py".format(plugin))
-                )
-                if not os.path.exists(path):
-                    path = os.path.realpath(
-                        os.path.join(
-                            global_plugin_dir, "{0}.py".format(plugin)
-                        )
-                    )
-
-                try:
-                    i = imp.load_source('plugin_%s' % plugin, path)
-                except Exception:
-                    logging.error(u"Failed to import Plugin {0}: {1}".format(
-                        plugin, traceback.format_exc())
-                    )
-                else:
-                    for (member_name, member) in inspect.getmembers(i):
-                        if (inspect.isclass(member) and
-                                member_name != "CactusPluginBase"
-                                and issubclass(member, CactusPluginBase)):
-                            imported_plugins.update({plugin: member(self)})
-        self._plugins = imported_plugins
+        self._plugins = self.load_modules("plugins", CactusPluginBase)
 
 
     def load_context_processors(self):
-        imported_processors = {}
+        self._context_processors = self.load_modules("context_processors", ContextProcessorBase)
 
-        local_processor_dir = os.path.realpath(
-            os.path.join(self.path, "context_processors")
+    def load_tests(self):
+        self._tests = self.load_modules("tests", CactusTestBase)
+
+
+    def load_modules(self, module_type, baseclass):
+        imported_modules = {}
+
+        local_modules_dir = os.path.realpath(
+            os.path.join(self.path, module_type)
         )
-        global_processor_dir = os.path.realpath(
-            os.path.join(os.path.dirname(__file__), "context_processors")
+        global_modules_dir = os.path.realpath(
+            os.path.join(os.path.dirname(__file__), module_type)
         )
-        processors_to_load = None
+        modules_to_load = None
 
         try:
-            processors_to_load = self.config.get("common").get("context_processors", [])
+            modules_to_load = self.config.get("common").get(module_type, [])
         except:
             pass
 
-        if processors_to_load:
-            for processor in processors_to_load:
+        if modules_to_load:
+            for module in modules_to_load:
                 path = os.path.realpath(
-                    os.path.join(local_processor_dir, "{0}.py".format(processor))
+                    os.path.join(local_modules_dir, "{0}.py".format(module))
                 )
                 if not os.path.exists(path):
                     path = os.path.realpath(
                         os.path.join(
-                            global_processor_dir, "{0}.py".format(processor)
+                            global_modules_dir, "{0}.py".format(module)
                         )
                     )
 
                 try:
-                    i = imp.load_source('context_processors_%s' % processor, path)
+                    i = imp.load_source('%s_%s' % (module_type, module), path)
                 except Exception:
-                    logging.error(u"Failed to import Plugin {0}: {1}".format(
-                        processor, traceback.format_exc())
+                    logging.error(u"Failed to import Module {0}: {1}".format(
+                        module, traceback.format_exc())
                     )
                 else:
                     for (member_name, member) in inspect.getmembers(i):
                         if (inspect.isclass(member) and
-                                member_name != "ContextProcessorBase"
-                                and issubclass(member, ContextProcessorBase)):
-                            imported_processors.update({processor: member(self)})
-        self._context_processors = imported_processors
+                            member_name != baseclass.__name__
+                            and issubclass(member, baseclass)):
+                            imported_modules.update({module: member(self)})
+        return imported_modules
+
 
     def call_plugin_method(self, method, *args, **kwargs):
         """
@@ -371,3 +343,10 @@ class Site(object):
         return {
             "plugins": ctx
         }
+
+
+    def run_tests(self):
+        success = True
+        for test_obj in self._tests.values():
+            success &= test_obj.run()
+        return success

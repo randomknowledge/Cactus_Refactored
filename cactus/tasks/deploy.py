@@ -16,7 +16,7 @@ class DeployTask(BaseTask):
 
     local_settings = {}
     config = {}
-    helptext_short = "deploy [target] [--build=yes|no]: " \
+    helptext_short = "deploy [target] [--build=yes|no] [--runtests=yes|no]: " \
                      "deploy project to the given target."
 
     @classmethod
@@ -25,28 +25,23 @@ class DeployTask(BaseTask):
 
     @classmethod
     def run(cls, *args, **kwargs):
-        if len(args) > 2:
+        if len(args) > 3:
             print cls.usage()
             return
 
         do_build = True
+        run_tests = False
         target = "default"
-        if len(args) > 1:
-            m1 = re.match(r'--build=(yes|no)', args[0], re.I)
-            m2 = re.match(r'--build=(yes|no)', args[1], re.I)
-            if m1:
-                target = args[1]
-                do_build = m1.group(1).lower() == "yes"
-            else:
-                target = args[0]
-                if m2:
-                    do_build = m2.group(1).lower() == "yes"
-        elif len(args) == 1:
-            m1 = re.match(r'--build=(yes|no)', args[0], re.I)
+
+        for arg in args:
+            m1 = re.match(r'--build=(yes|no)', arg, re.I)
+            m2 = re.match(r'--runtests=(yes|no)', arg, re.I)
             if m1:
                 do_build = m1.group(1).lower() == "yes"
+            elif m2:
+                run_tests = m2.group(1).lower() == "yes"
             else:
-                target = args[0]
+                target = arg
 
         try:
             cls.local_settings = yaml.load(
@@ -75,10 +70,14 @@ class DeployTask(BaseTask):
             )
             return client
 
-        if do_build:
+        if do_build or run_tests:
             print "Building site..."
             site.build(dist=True)
             site.call_plugin_method("preDeploy")
+            if run_tests:
+                if not site.run_tests():
+                    logging.error("Not all tests ran successfully! Exiting...")
+                    return
         print u"Deploying to {0}...".format(target)
 
         if deployment_type == "ssh":
