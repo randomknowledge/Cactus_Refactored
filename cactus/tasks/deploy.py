@@ -172,5 +172,6 @@ class DeployTask(BaseTask):
                     s3_file = File(site, f, cls.conf("s3_site_domain"))
                     s3_file.upload(selected_bucket)
             site.call_plugin_method("postDeploy")
+            logging.info("Deployment complete. Please check your site at:\nhttp://{0}/".format(cls.conf("s3_site_domain")))
         else:
             logging.warn("Deployment type '{0}' is not implemented!".format(deployment_type))
