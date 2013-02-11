@@ -12,6 +12,7 @@ By now `Cactus Refactored` has the following features:
 * serve project via builtin development webserver with auto-reload-functionality working on Windows, Mac OS X and Linux
 * (obviously) build projects
 * deploy projects via SSH (public key auth and simple password auth are supported)
+* deploy projects via Amazon S3
 * extendable via plugins (builtin and custom). Builtin plugins are:
 	* Coffeescript
 	* Sass/Scss
