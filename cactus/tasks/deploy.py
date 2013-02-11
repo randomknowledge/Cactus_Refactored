@@ -1,12 +1,15 @@
 # coding: utf-8
 import logging
 import getpass
+import boto
+from cactus.s3.utils import fileList
 import re
 import os
 import paramiko
+import yaml
 from . import BaseTask
 from cactus.scp import SCPClient
-import yaml
+from cactus.s3.file import File
 
 
 class DeployTask(BaseTask):
@@ -127,6 +130,47 @@ class DeployTask(BaseTask):
             for file in os.listdir(dist_dir):
                 f = os.path.join(dist_dir, file)
                 scp.put(f, remote_path=cls.conf("path"), recursive=os.path.isdir(f))
+            site.call_plugin_method("postDeploy")
+        elif deployment_type == "s3":
+            key = cls.conf("s3_access_key")
+            secret = cls.conf("s3_secret_key")
+            if not key:
+                key = raw_input("Please enter Amazon AWS key: ")
+            if not secret:
+                secret = raw_input("Please enter Amazon AWS Secret Key: ")
+            connection = boto.connect_s3(key.strip(), secret.strip())
+            try:
+                buckets = connection.get_all_buckets()
+            except:
+                logging.error('Invalid login credentials, please try again...')
+                return
+            bucket = cls.conf("s3_bucket")
+            if not bucket:
+                bucket = raw_input("S3 bucket name (www.yoursite.com): ").strip().lower()
+            if bucket not in [b.name for b in buckets]:
+                if raw_input('Bucket does not exist, create it? (y/n): ') == 'y':
+                    try:
+                        created_bucket = connection.create_bucket(bucket, policy='public-read')
+                    except boto.exception.S3CreateError, e:
+                        logging.error('Bucket with name {0} already is used by someone else, please try again with another name.'.format(bucket))
+                        return
+                    created_bucket.configure_website('index.html', 'error.html')
+
+            try:
+                buckets = connection.get_all_buckets()
+            except:
+                logging.error('Invalid login credentials, please try again...')
+                return
+
+            selected_bucket = None
+            for b in buckets:
+                if b.name == bucket:
+                    selected_bucket = b
+            if selected_bucket:
+                dist_dir = site.paths['dist']
+                for f in fileList(dist_dir, relative=True):
+                    s3_file = File(site, f, cls.conf("s3_site_domain"))
+                    s3_file.upload(selected_bucket)
             site.call_plugin_method("postDeploy")
         else:
             logging.warn("Deployment type '{0}' is not implemented!".format(deployment_type))

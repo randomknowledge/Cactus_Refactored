@@ -31,6 +31,7 @@ ____
 * [slimit](http://slimit.readthedocs.org/en/latest/)
 * [selenium](http://pypi.python.org/pypi/selenium)
 * [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/)
+* [boto](https://github.com/boto/boto/)
 
 ## Installation
 
@@ -43,7 +44,7 @@ $ sudo easy_install pip
 Download source and install package using pip (Version 1.1 Stable):
 
 ```console
-$ sudo pip install -e git+https://github.com/randomknowledge/Cactus_Refactored.git@1-1-stable#egg=Cactus
+$ sudo pip install -e git+https://github.com/randomknowledge/Cactus_Refactored.git@1-2-stable#egg=Cactus
 ```
 
 Download source and install package using pip (Development version):
