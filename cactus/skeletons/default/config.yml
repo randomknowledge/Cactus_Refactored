@@ -72,7 +72,7 @@ deploy:
     auth: "password|public-key"
     user: username
     private_key: "{home}/.ssh/id_rsa" #only neccessary for auth=public-key
-	s3_access_key: "insert access key here" #only neccessary for type=s3
-	s3_secret_key: "insert secret key here" #only neccessary for type=s3
-	s3_bucket: "bucket name" #only neccessary for type=s3
+    s3_access_key: "insert access key here" #only neccessary for type=s3
+    s3_secret_key: "insert secret key here" #only neccessary for type=s3
+    s3_bucket: "bucket name" #only neccessary for type=s3
     s3_site_domain: "yourdomain.cloudfront.net" #only neccessary for type=s3
