@@ -4,7 +4,7 @@
 class CactusPluginBase(object):
     def __init__(self, site):
         self.site = site
-        self.name = self.__module__.split(".").pop().replace("plugin_", "")
+        self.name = self.__module__.split(".").pop().replace("plugins_", "")
         try:
             self.config = site.config.get("plugins").get(self.name)
         except:
