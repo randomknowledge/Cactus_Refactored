@@ -23,6 +23,9 @@ class SassPlugin(CactusPluginBase):
         if not os.path.isdir(sass_dir) or not os.listdir(sass_dir):
             return
 
+        if not os.path.exists(css_dir):
+            os.makedirs(css_dir)
+
         main_file_sass = self.config.get("main_file_sass", "main.sass")
         if s_type == "scss":
             main_file_sass = self.config.get("main_file_scss", "main.scss")
