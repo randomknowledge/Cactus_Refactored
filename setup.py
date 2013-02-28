@@ -7,12 +7,11 @@ Static site generation and deployment.
 :copyright: (c) 2012 Florian Finke.
 :license: MIT
 """
+import os
 import re
 import sys
 import platform
-
-from setuptools import setup, os
-from setuptools.command.test import test as TestCommand
+from distutils.core import setup, Command
 
 
 def fileList(paths, relative=False, folders=False):
@@ -75,18 +74,20 @@ if platform.system() != "Darwin":
     reqs.append('selenium==2.27.0')
 
 
-class Tox(TestCommand):
-    def finalize_options(self):
-        TestCommand.finalize_options(self)
-        self.test_args = []
-        self.test_suite = True
+class Tox(Command):
+    user_options = []
 
-    def run_tests(self):
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
         import tox
 
-        errno = tox.cmdline(self.test_args)
+        errno = tox.cmdline([])
         sys.exit(errno)
-
 
 setup(
     name='Cactus',

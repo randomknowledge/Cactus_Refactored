@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 import inspect
+import logging
 import traceback
 import cactus
 from cactus.tasks import BaseTask
-from django.utils.log import logger
 import re
 import os
 import sys
@@ -29,7 +29,7 @@ def import_tasks():
                     i = __import__(dsn, globals(), locals(),
                                    [parentmodule], -1)
                 except Exception:
-                    logger.error(u"Failed to import Task {0}: {1}".format(
+                    logging.error(u"Failed to import Task {0}: {1}".format(
                         mod, traceback.format_exc()))
                 else:
                     valid = False
