@@ -11,7 +11,8 @@ import os
 import re
 import sys
 import platform
-from distutils.core import setup, Command
+from setuptools import setup
+from setuptools.command.test import test as TestCommand
 
 
 def fileList(paths, relative=False, folders=False):
@@ -74,19 +75,16 @@ if platform.system() != "Darwin":
     reqs.append('selenium==2.27.0')
 
 
-class Tox(Command):
-    user_options = []
-
-    def initialize_options(self):
-        pass
-
+class Tox(TestCommand):
     def finalize_options(self):
-        pass
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
 
-    def run(self):
+    def run_tests(self):
         import tox
 
-        errno = tox.cmdline([])
+        errno = tox.cmdline(self.test_args)
         sys.exit(errno)
 
 setup(
