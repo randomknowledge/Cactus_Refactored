@@ -42,10 +42,10 @@ Install [pip](http://pypi.python.org/pypi/pip):
 $ sudo easy_install pip
 ```
 
-Download source and install package using pip (Version 1.1 Stable):
+Download source and install package using pip (Version 1.3 Stable):
 
 ```console
-$ sudo pip install -e git+https://github.com/randomknowledge/Cactus_Refactored.git@1-2-stable#egg=Cactus
+$ sudo pip install -e git+https://github.com/randomknowledge/Cactus_Refactored.git@1-3-stable#egg=Cactus
 ```
 
 Download source and install package using pip (Development version):

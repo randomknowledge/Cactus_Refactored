@@ -90,7 +90,7 @@ class Tox(TestCommand):
 
 setup(
     name='Cactus',
-    version="1.2.0",
+    version="1.3.0",
     description="Static site generation and deployment.",
     long_description=__doc__,
     url='http://github.com/randomknowledge/Cactus_Refactored',
@@ -100,9 +100,9 @@ setup(
     packages=['cactus', 'cactus.tasks', 'cactus.s3', ],
     package_data=package_data,
     entry_points={
-    'console_scripts': [
-        'cactus = cactus.cli:main',
-    ],
+        'console_scripts': [
+            'cactus = cactus.cli:main',
+        ],
     },
     install_requires=reqs,
     tests_require=['tox', ],

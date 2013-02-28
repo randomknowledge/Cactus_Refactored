@@ -57,6 +57,21 @@ plugins:
   blog:
     post_identifier: "posts/**/*.html"
 
+  minifyjs:
+    ouput_filename: main.min.js
+    keep_unminified: true
+    minify_vendor_scripts: true
+
+#
+# Build settings
+# =========================
+build:
+  discard_static:
+    - coffee
+    - sass
+    - scss
+    - less
+
 #
 # Deployment settings
 # All settings can be overwritten in a file called deploy.yml
