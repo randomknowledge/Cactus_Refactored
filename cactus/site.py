@@ -255,7 +255,7 @@ class Site(object):
         def ignore_special(src, names):
             bn = os.path.basename(src)
             if bn == "static":
-                return ["coffee", "sass", "scss", "less"]
+                return self.config.get('build', {}).get('discard_static', [])
             return []
 
         shutil.copytree(
@@ -269,13 +269,11 @@ class Site(object):
     def load_plugins(self):
         self._plugins = self.load_modules("plugins", CactusPluginBase)
 
-
     def load_context_processors(self):
         self._context_processors = self.load_modules("context_processors", ContextProcessorBase)
 
     def load_tests(self):
         self._tests = self.load_modules("tests", CactusTestBase)
-
 
     def load_modules(self, module_type, baseclass):
         imported_modules = {}
