@@ -24,9 +24,9 @@ class NoCactusDirectoryException(Exception):
 class Site(object):
     def __init__(self, path):
         self.path = path
-        self._plugins = []
-        self._context_processors = []
-        self._tests = []
+        self._plugins = {}
+        self._context_processors = {}
+        self._tests = {}
         self._contextCache = {}
         self.browser = None
 
@@ -323,8 +323,7 @@ class Site(object):
         Run this method on all plugins
         """
         cwd = os.getcwd()
-        if not hasattr(self, '_plugins'):
-            self.load_plugins()
+        self.load_plugins()
 
         for plugin_name, plugin in self._plugins.iteritems():
             if hasattr(plugin, method):

@@ -8,8 +8,8 @@ import os
 import paramiko
 import yaml
 from . import BaseTask
-from cactus.scp import SCPClient
 from cactus.s3.file import File
+from paramiko import SFTPClient
 
 
 class DeployTask(BaseTask):
@@ -124,12 +124,26 @@ class DeployTask(BaseTask):
                     password=getpass.getpass(prompt="Please enter your password: ")
                 )
 
-            scp = SCPClient(ssh.get_transport())
+            scp = SFTPClient.from_transport(ssh.get_transport())
+            dist_dir = os.path.abspath(site.paths['dist'])
+            remote_base = cls.conf("path")
 
-            dist_dir = site.paths['dist']
-            for file in os.listdir(dist_dir):
-                f = os.path.join(dist_dir, file)
-                scp.put(f, remote_path=cls.conf("path"), recursive=os.path.isdir(f))
+            for (path, dirs, files) in os.walk(dist_dir):
+                remote_path = path.replace(dist_dir, '')
+                remote_path = re.sub(r'^/', '', remote_path)
+                for d in dirs:
+                    rdir = os.path.join(remote_base, remote_path, d)
+                    try:
+                        scp.stat(rdir)
+                    except IOError:
+                        scp.mkdir(rdir)
+                for f in files:
+                    logging.info("Copying {0} => {1}".format(os.path.join(path, f), os.path.join(remote_path, f)))
+                    scp.put(
+                        os.path.abspath(os.path.join(path, f)),
+                        os.path.join(remote_base, remote_path, f)
+                    )
+
             site.call_plugin_method("postDeploy")
         elif deployment_type == "s3":
             key = cls.conf("s3_access_key")
