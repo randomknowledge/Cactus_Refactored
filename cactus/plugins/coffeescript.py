@@ -1,10 +1,20 @@
 # coding: utf-8
+import logging
 from cactus.utils import fileList, shell_escape, run_subprocess
 import os
 from cactus.plugin_base import CactusPluginBase
 
 
 class CoffeeScriptPlugin(CactusPluginBase):
+    def _slitpath(self, s):
+        rest, tail = os.path.split(s)
+        if rest == '':
+            return tail,
+        return self._slitpath(rest) + (tail,)
+
+    def _path_to_url(self, path, basepath):
+        return '/'.join(self._slitpath(os.path.relpath(path, start=basepath)))
+
     def postBuild(self, *args, **kwargs):
         self.run()
 
@@ -28,8 +38,9 @@ class CoffeeScriptPlugin(CactusPluginBase):
             build_order = self.config.get("build_order")
             if build_order:
                 def sort_by_buildorder(a, b):
-                    a = a.replace(coffeepath + "/", "")
-                    b = b.replace(coffeepath + "/", "")
+                    a = self._path_to_url(a, coffeepath)
+                    b = self._path_to_url(b, coffeepath)
+
                     idx_a = 9999999
                     idx_b = 9999999
                     if a in build_order:
