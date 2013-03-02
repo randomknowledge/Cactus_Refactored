@@ -132,14 +132,16 @@ class DeployTask(BaseTask):
             for (path, dirs, files) in os.walk(dist_dir):
                 remote_path = path.replace(dist_dir, '')
                 remote_path = re.sub(r'^/', '', remote_path)
+                remote_path = re.sub(r'^\\', '', remote_path)
                 for d in dirs:
-                    rdir = os.path.join(remote_base, remote_path, d)
+                    rdir = to_unix_path(os.path.join(remote_base, remote_path, d))
+                    print "RDIR", rdir
                     try:
                         scp.stat(rdir)
                     except IOError:
                         scp.mkdir(rdir)
                 for f in files:
-                    src = to_unix_path(os.path.abspath(os.path.join(path, f)))
+                    src = os.path.abspath(os.path.join(path, f))
                     dest = to_unix_path(os.path.join(remote_base, remote_path, f))
                     logging.info("Copying {0} => {1}".format(src, dest))
                     scp.put(

@@ -129,4 +129,7 @@ def slitpath(path):
 
 
 def to_unix_path(path):
-    return '/'.join(slitpath(path))
+    if os.name == "nt":
+        return path.replace('\\', '/')
+    else:
+        return '/'.join(slitpath(path))
