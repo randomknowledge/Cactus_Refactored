@@ -119,3 +119,14 @@ def run_subprocess(cmd):
 def template_escape_path(path):
     path, _ = os.path.splitext(path)
     return slugify(path.replace("/", "_").replace("-", "_"))
+
+
+def slitpath(path):
+    rest, tail = os.path.split(path)
+    if rest == '':
+        return tail,
+    return slitpath(rest) + (tail,)
+
+
+def to_unix_path(path):
+    return '/'.join(slitpath(path))

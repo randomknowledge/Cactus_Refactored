@@ -10,6 +10,7 @@ import yaml
 from . import BaseTask
 from cactus.s3.file import File
 from paramiko import SFTPClient
+from cactus.utils import to_unix_path
 
 
 class DeployTask(BaseTask):
@@ -138,10 +139,12 @@ class DeployTask(BaseTask):
                     except IOError:
                         scp.mkdir(rdir)
                 for f in files:
-                    logging.info("Copying {0} => {1}".format(os.path.join(path, f), os.path.join(remote_path, f)))
+                    src = to_unix_path(os.path.abspath(os.path.join(path, f)))
+                    dest = to_unix_path(os.path.join(remote_base, remote_path, f))
+                    logging.info("Copying {0} => {1}".format(src, dest))
                     scp.put(
-                        os.path.abspath(os.path.join(path, f)),
-                        os.path.join(remote_base, remote_path, f)
+                        src,
+                        dest
                     )
 
             site.call_plugin_method("postDeploy")
