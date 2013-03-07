@@ -135,7 +135,6 @@ class DeployTask(BaseTask):
                 remote_path = re.sub(r'^\\', '', remote_path)
                 for d in dirs:
                     rdir = to_unix_path(os.path.join(remote_base, remote_path, d))
-                    print "RDIR", rdir
                     try:
                         scp.stat(rdir)
                     except IOError:

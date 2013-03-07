@@ -106,6 +106,7 @@ def shell_escape(path):
     else:
         return pipes.quote(path)
 
+
 def run_subprocess(cmd):
     try:
         output = subprocess.check_output(cmd, shell=True)
@@ -132,4 +133,4 @@ def to_unix_path(path):
     if os.name == "nt":
         return path.replace('\\', '/')
     else:
-        return '/'.join(slitpath(path))
+        return path
