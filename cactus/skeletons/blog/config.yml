@@ -32,9 +32,10 @@ plugins:
   coffeescript:
     build_order:
       - main.coffee
-    command: "coffee --join main.js --compile --output {dir_js} {files}"
+    output_filename: main.js
+    command: "coffee --join {output_filename} --compile --output {dir_js} {files}"
     # command_windows will overwrite command if running on windows os:
-    command_windows: '"C:/Program Files/nodejs/node.exe" "C:/Program Files/CoffeeScript/bin/coffee" --join main.js --compile --output {dir_js} {files}'
+    command_windows: '"C:/Program Files/nodejs/node.exe" "C:/Program Files/CoffeeScript/bin/coffee" --join {output_filename} --compile --output {dir_js} {files}'
 
   sass:
     type: sass # choose "sass" or "scss"
@@ -58,6 +59,7 @@ plugins:
     post_identifier: "posts/**/*.html"
 
   minifyjs:
+    input_filename: main.js
     ouput_filename: main.min.js
     keep_unminified: true
     minify_vendor_scripts: true

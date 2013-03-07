@@ -4,7 +4,7 @@ import logging
 import socket
 
 
-VERSION = "1.3.1"
+VERSION = "1.4"
 
 socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 socket.settimeout(5)

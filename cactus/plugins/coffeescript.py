@@ -1,4 +1,5 @@
 # coding: utf-8
+import shutil
 from cactus.utils import fileList, shell_escape, run_subprocess, slitpath
 import os
 from cactus.plugin_base import CactusPluginBase
@@ -51,25 +52,50 @@ class CoffeeScriptPlugin(CactusPluginBase):
 
         files = fileList(coffeepath)
         files.sort(sort_by_buildorder)
-
         files = " ".join(map(lambda x: shell_escape(x), files))
+
+        output_filename = self.config.get(
+            "output_filename",
+            "main.js"
+        )
+
+        temp_output_filename = ".tmp.main.js"
+
         coffee = self.config.get(
             "command",
-            "coffee --join main.js --compile --output {dir_js} {files}"
+            "coffee --join {output_filename} --compile --output {dir_js} {files}"
+        )
+
+        dir_js = shell_escape(
+            os.path.abspath(
+                os.path.join(
+                    self.site.paths["dist" if dist else "build"],
+                    "static", "js"
+                )
+            )
         )
 
         cmd = coffee.format(
-            dir_js=shell_escape(
-                os.path.abspath(
-                    os.path.join(
-                        self.site.paths["dist" if dist else "build"],
-                        "static", "js"
-                    )
-                )
-            ), files=files
+            output_filename=temp_output_filename,
+            dir_js=dir_js,
+            files=files,
         )
 
+        result = 0
         if os.name == "nt":
             run_subprocess(cmd)
+            # TODO: take return code into account on windows
         else:
-            os.system(cmd)
+            print cmd
+            result = os.system(cmd)
+
+        if result == 0:
+            shutil.move(
+                os.path.join(dir_js, temp_output_filename),
+                os.path.join(dir_js, output_filename),
+            )
+        else:
+            try:
+                os.remove(os.path.join(dir_js, temp_output_filename))
+            except OSError:
+                pass

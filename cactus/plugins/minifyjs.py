@@ -24,7 +24,10 @@ class MinifyJsPlugin(CactusPluginBase):
         self.infile = os.path.abspath(
             os.path.join(
                 self.js_dir,
-                'main.js'
+                self.config.get(
+                    'input_filename',
+                    'main.js'
+                )
             )
         )
 
@@ -37,6 +40,7 @@ class MinifyJsPlugin(CactusPluginBase):
                 )
             )
         )
+
         return True
 
     def _minify(self, infile, outfile=None):
@@ -56,7 +60,10 @@ class MinifyJsPlugin(CactusPluginBase):
             return
 
         # Do not minify in devlopment mode, only rename file
-        shutil.move(self.infile, self.outfile)
+        try:
+            shutil.move(self.infile, self.outfile)
+        except IOError:
+            pass
 
     def postDist(self, *args, **kwargs):
         if not self._prepare(dist=True):
