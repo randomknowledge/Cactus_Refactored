@@ -98,6 +98,8 @@ class File(object):
             mimeType = mimetypes.guess_type(self.path)
 
             if mimeType:
+                if type(mimeType) == tuple or type(mimeType) == list:
+                    mimeType = mimeType[0]
                 key.content_type = mimeType
 
             # Upload the data
