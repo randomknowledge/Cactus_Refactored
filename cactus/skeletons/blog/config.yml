@@ -54,11 +54,22 @@ plugins:
     command: "lessc {input} {output}"
 
   csssprites:
+    # path (relative to static) where the images to generate a sprite from are stored
     input_dir: img/_sprites
+
+    # Directory (relative to static) in which the resulting sprite image is stored
     output_dir: img/sprites
+
+    # Directory (relative to static) in which the resulting sprite css is stored
     css_dir: css/sprites
+
+    # During deploy, omit 'input_dir' if set to true
     dont_deploy_input_dir: true
+
+    # See http://glue.readthedocs.org/en/latest/ratios.html#how-retina-and-ratios-work
     retina: false
+
+    # Glue command to be called. Change this to your needs
     command: "glue --cachebuster --crop {retina} {input_dir} --css={css_dir} --img={output_dir}"
 
   imageopti:
