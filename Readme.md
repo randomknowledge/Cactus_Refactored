@@ -1,6 +1,18 @@
 # Cactus Refactored
 [![Build Status](https://travis-ci.org/randomknowledge/Cactus_Refactored.png?branch=master)](https://travis-ci.org/randomknowledge/Cactus_Refactored)
 ___
+
+## Table of Contents  
+* [Introduction](#introduction)
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [Using `Cactus Refactored`](#using-cactus-refactored)
+* [Usage example](#usage-example)
+* [CSS Sprites](#css-sprites)
+* [Custom Plugins](#custom-plugins)
+* [Custom Context Processors](#custom-context-processors)
+
+## Introduction
 `Cactus Refactored` is a static website generator using [Python](http://www.python.org/)
 and the [Django template system](https://docs.djangoproject.com/en/dev/topics/templates/).
 Originally I wrote this as a refactored version of [Cactus](https://github.com/koenbok/Cactus),
