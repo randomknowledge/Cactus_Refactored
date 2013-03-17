@@ -19,6 +19,7 @@ By now `Cactus Refactored` has the following features:
 	* Less
 	* imageopti (lossless image compression for png, gif and jpg files)
 	* minify JS
+	* Haml
 	* Blog
 * custom template context processors (see [context_processors/default.py](https://github.com/randomknowledge/Cactus_Refactored/blob/master/cactus/context_processors/default.py) for an example)
 * completely configurable via [YAML](http://de.wikipedia.org/wiki/YAML). See [config.yml](https://github.com/randomknowledge/Cactus_Refactored/blob/master/cactus/skeletons/default/config.yml) for details.
@@ -33,6 +34,7 @@ ____
 * [selenium](http://pypi.python.org/pypi/selenium)
 * [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/)
 * [boto](https://github.com/boto/boto/)
+* [HamlPy](https://github.com/jessemiller/HamlPy/)
 
 ## Installation
 
@@ -42,10 +44,10 @@ Install [pip](http://pypi.python.org/pypi/pip):
 $ sudo easy_install pip
 ```
 
-Download source and install package using pip (Version 1.4 Stable):
+Download source and install package using pip (Version 1.5 Stable):
 
 ```console
-$ sudo pip install -e git+https://github.com/randomknowledge/Cactus_Refactored.git@1-4-stable#egg=Cactus
+$ sudo pip install -e git+https://github.com/randomknowledge/Cactus_Refactored.git@1-5-stable#egg=Cactus
 ```
 
 Download source and install package using pip (Development version):
