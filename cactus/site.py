@@ -238,7 +238,7 @@ class Site(object):
         List of pages.
         """
         paths = fileList(self.paths['pages'], relative=True)
-        paths = filter(lambda x: not x.endswith("~"), paths)
+        paths = filter(lambda x: not x.endswith("~") and not x.endswith(".haml"), paths)
         return [Page(self, p) for p in paths]
 
     def build_static(self, dist=False):

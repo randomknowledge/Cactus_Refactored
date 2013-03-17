@@ -9,6 +9,7 @@
 # Active Plugins
 common:
   plugins:
+    # - haml
     - coffeescript
     - sass # sass plugin can also handle scss (see "sass" section below).
     # - less # Only choose sass OR less, not both!
