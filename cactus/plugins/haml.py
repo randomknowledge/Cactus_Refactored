@@ -39,4 +39,7 @@ class HamlPlugin(CactusPluginBase):
     def cleanup(self):
         for haml in self.files():
             html = haml.replace('.haml', '.html')
-            os.remove(html)
+            try:
+                os.remove(html)
+            except:
+                pass

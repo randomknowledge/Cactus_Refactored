@@ -17,6 +17,7 @@ By now `Cactus Refactored` has the following features:
 	* Coffeescript
 	* Sass/Scss
 	* Less
+	* CSS Sprites
 	* imageopti (lossless image compression for png, gif and jpg files)
 	* minify JS
 	* Haml
@@ -35,6 +36,7 @@ ____
 * [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/)
 * [boto](https://github.com/boto/boto/)
 * [HamlPy](https://github.com/jessemiller/HamlPy/)
+* [Glue](https://github.com/jorgebastida/glue/)
 
 ## Installation
 

@@ -10,6 +10,7 @@
 common:
   plugins:
     # - haml
+    - csssprites
     - coffeescript
     - sass # sass plugin can also handle scss (see "sass" section below).
     # - less # Only choose sass OR less, not both!
@@ -51,6 +52,14 @@ plugins:
     main_file_less: main.less
     main_file_css: main.css
     command: "lessc {input} {output}"
+
+  csssprites:
+    input_dir: img/_sprites
+    output_dir: img/sprites
+    css_dir: css/sprites
+    dont_deploy_input_dir: true
+    retina: false
+    command: "glue --cachebuster --crop {retina} {input_dir} --css={css_dir} --img={output_dir}"
 
   imageopti:
     command_png: "optipng {files}"

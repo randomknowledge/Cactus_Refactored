@@ -71,6 +71,7 @@ reqs = [
     'BeautifulSoup==3.2.0',
     'boto==2.8.0',
     'hamlpy==0.82.2',
+    'glue==0.3',
 ]
 if platform.system() != "Darwin":
     reqs.append('selenium==2.27.0')
@@ -90,7 +91,7 @@ class Tox(TestCommand):
 
 setup(
     name='Cactus',
-    version="1.5.0",
+    version="1.5.1",
     description="Static site generation and deployment.",
     long_description=__doc__,
     url='http://github.com/randomknowledge/Cactus_Refactored',
