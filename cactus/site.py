@@ -15,6 +15,7 @@ from cactus.plugin_base import CactusPluginBase
 from cactus.context_processor_base import ContextProcessorBase
 from cactus.utils import fileList
 from cactus import browser
+import cactus.templatetags as cactus_tags
 
 
 class NoCactusDirectoryException(Exception):
@@ -174,6 +175,8 @@ class Site(object):
         """
         Generate fresh site from templates.
         """
+
+        cactus_tags.register_all(self)
 
         buildpath = self.paths["dist" if dist else "build"]
 

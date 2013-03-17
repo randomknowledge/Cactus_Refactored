@@ -2,10 +2,9 @@ import BeautifulSoup
 import os
 import codecs
 import logging
-
+from django.template import Template, Context
 from .utils import parseValues
-
-from django.template import Template, Context, loader
+from .templatetags import cactus_tags
 
 
 class Page(object):
@@ -49,7 +48,7 @@ class Page(object):
 
         return Context(context)
 
-    def render(self):
+    def gen_template_and_context(self):
         """
         Takes the template data with contect and renders it
         to the final output file.
@@ -67,7 +66,16 @@ class Page(object):
                     self.site, self, context, data
                 )
 
-        return Template(data).render(context)
+        return Template(data), context
+
+    def render(self):
+        """
+        Takes the template data with contect and renders it
+        to the final output file.
+        """
+
+        tpl, ctx = self.gen_template_and_context()
+        return tpl.render(ctx)
 
     def build(self, dist=False):
         """

@@ -91,14 +91,14 @@ class Tox(TestCommand):
 
 setup(
     name='Cactus',
-    version="1.5.1",
+    version="1.5.2",
     description="Static site generation and deployment.",
     long_description=__doc__,
     url='http://github.com/randomknowledge/Cactus_Refactored',
     author='Florian Finke',
     author_email='flo@randomknowledge.org',
     license='MIT',
-    packages=['cactus', 'cactus.tasks', 'cactus.s3', ],
+    packages=['cactus', 'cactus.tasks', 'cactus.s3', 'cactus.templatetags', ],
     package_data=package_data,
     entry_points={
         'console_scripts': [

@@ -11,6 +11,7 @@ ___
 * [CSS Sprites](#css-sprites)
 * [Custom Plugins](#custom-plugins)
 * [Custom Context Processors](#custom-context-processors)
+* [Special Template Tags](#special-template-tags)
 
 ## Introduction
 `Cactus Refactored` is a static website generator using [Python](http://www.python.org/)
@@ -217,4 +218,16 @@ class MyCustomContext(ContextProcessorBase):
 Hello {{ name }}!
 </body>
 </html>
+```
+
+## Special Template Tags
+Right now `Cactus Refactored` has one custom template tag: `render_block_from_file`.
+Use it like this:
+```html
+{% render_block_from_file 'another-page' 'blockname' %}
+```
+This will render the block 'blockname' from the page 'another-page' inside your template.
+To render a block from a page in a subfolder use the followinf syntax:
+```html
+{% render_block_from_file 'sub/folder/another-page' 'blockname' %}
 ```
