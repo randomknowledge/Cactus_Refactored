@@ -80,6 +80,81 @@ $ cactus serve
 $ cactus build
 ```
 
+## CSS Sprites
+To use CSS Sprites make sure the `csssprites` plugin is activated in your `config.yml` (default):
+```yaml
+common:
+  plugins:
+    # [..]
+    - csssprites
+    # [..]
+```
+
+You can configure the `csssprites` plugin in your `config.yml` like this (this is also the default config):
+```yaml
+plugins:
+  csssprites:
+    # path (relative to static) where the images to generate a sprite from are stored
+    input_dir: img/_sprites
+    
+    # Directory (relative to static) in which the resulting sprite image is stored
+    output_dir: img/sprites
+    
+    # Directory (relative to static) in which the resulting sprite css is stored
+    css_dir: css/sprites
+    
+    # During deploy, omit 'input_dir' if set to true
+    dont_deploy_input_dir: true
+    
+    # See http://glue.readthedocs.org/en/latest/ratios.html#how-retina-and-ratios-work
+    retina: false
+    
+    # Glue command to be called. Change this to your needs
+    command: "glue --cachebuster --crop {retina} {input_dir} --css={css_dir} --img={output_dir}"
+```
+
+Following the default settings your directory structure (inside 'static') should be like this:
+
+```console
+img/
+└── _sprites/
+    └── sprite1/
+        ├── some_icon.png
+        └── another_icon.png
+```
+
+The resulting structure will be like this:
+
+```console
+img/
+├── sprites/
+|   └── sprite1.png
+└── css/
+    └── sprites/
+        └── sprite1.css
+```
+
+You also need to make sure the generated css files are included in your templates (before main.css):
+```html
+<head>
+    [..]
+    <link rel="stylesheet" href="{{ STATIC_URL }}/css/sprites/sprite1.css">
+    [..]
+</head>
+<body>
+    [..]
+    <div class="sprite-sprite1-some_icon"></div>
+    [..]
+</body>
+```
+As you can see you can see for every image in the sprite there will be a class created using this syntax:
+
+```console
+sprite-<sprite_name>-<image_name>
+```
+
+See the [Glue documentation](http://glue.readthedocs.org/en/latest/quickstart.html#and-why-those-css-class-names) for details.
+
 ## Custom Plugins
 
 To activate custom plugins inside your project, add them to a directory named `plugins` inside your project directory. The plugin filename must be unique and the file must contain a class that extends [CactusPluginBase](https://github.com/randomknowledge/Cactus_Refactored/blob/master/cactus/plugin_base.py). Have a look at the [minifyjs plugin](https://github.com/randomknowledge/Cactus_Refactored/blob/master/cactus/plugins/minifyjs.py) for a simple example.
