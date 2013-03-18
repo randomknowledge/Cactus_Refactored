@@ -30,6 +30,7 @@ class Site(object):
         self._tests = {}
         self._contextCache = {}
         self.browser = None
+        self.plugin_list = []
 
         self.paths = {
             'build': os.path.join(path, '.tmp'),
@@ -56,7 +57,7 @@ class Site(object):
                     if cmd:
                         self.config["plugins"][key]["command"] = cmd
                         del self.config["plugins"][key]["command_windows"]
-
+            self.plugin_list = self.config.get("common", {}).get('plugins', {})
         except Exception, e:
             self.config = {}
             logging.warn("Error parsing config.yml:\n{0}".format(e))
@@ -328,9 +329,11 @@ class Site(object):
         cwd = os.getcwd()
         self.load_plugins()
 
-        for plugin_name, plugin in self._plugins.iteritems():
-            if hasattr(plugin, method):
-                getattr(plugin, method)(*args, **kwargs)
+        for plugin_name in self.plugin_list:
+            plugin = self._plugins.get(plugin_name, None)
+            if plugin:
+                if hasattr(plugin, method):
+                    getattr(plugin, method)(*args, **kwargs)
         os.chdir(cwd)
 
     def get_plugin_contexts(self, *args, **kwargs):

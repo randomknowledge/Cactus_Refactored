@@ -48,6 +48,9 @@ plugins:
     # Uncomment for scss
     # command: "scss -t compressed {input} {output}"
 
+    # Currently only used for converting glue's css back to sass
+    convert_command: "sass-convert -F {in_format} -T {out_format} {infile} {outfile}"
+
   less:
     main_file_less: main.less
     main_file_css: main.css

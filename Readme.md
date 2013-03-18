@@ -147,19 +147,25 @@ img/
         └── sprite1.css
 ```
 
-You also need to make sure the generated css files are included in your templates (before main.css):
+If you are using the sass plugin, make sure to import the generated sprite sass file:
+```sass
+@import "sprites/sprite1"
+```
+
+Without the sass plugin make sure the generated css file is included in your templates (before main.css).
 ```html
 <head>
-    [..]
     <link rel="stylesheet" href="{{ STATIC_URL }}/css/sprites/sprite1.css">
-    [..]
 </head>
+```
+
+You can then use the sprites like this:
+```html
 <body>
-    [..]
     <div class="sprite-sprite1-some_icon"></div>
-    [..]
 </body>
 ```
+
 As you can see you can see for every image in the sprite there will be a class created using this syntax:
 
 ```console
