@@ -71,7 +71,7 @@ reqs = [
     'BeautifulSoup==3.2.0',
     'boto==2.8.0',
     'hamlpy==0.82.2',
-    'glue==0.3',
+    'glue==0.3_rk',
 ]
 if platform.system() != "Darwin":
     reqs.append('selenium==2.27.0')
@@ -91,7 +91,7 @@ class Tox(TestCommand):
 
 setup(
     name='Cactus',
-    version="1.5.2",
+    version="1.5.3",
     description="Static site generation and deployment.",
     long_description=__doc__,
     url='http://github.com/randomknowledge/Cactus_Refactored',
@@ -106,6 +106,9 @@ setup(
         ],
     },
     install_requires=reqs,
+    dependency_links=[
+        'https://github.com/randomknowledge/glue/tarball/master#egg=glue-0.3_rk',
+    ],
     tests_require=['tox', ],
     cmdclass={'test': Tox},
     zip_safe=False,
