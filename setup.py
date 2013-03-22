@@ -71,7 +71,7 @@ reqs = [
     'BeautifulSoup==3.2.0',
     'boto==2.8.0',
     'hamlpy==0.82.2',
-    'glue==0.3_rk',
+    'glue==0.3-rk',
 ]
 if platform.system() != "Darwin":
     reqs.append('selenium==2.27.0')
@@ -107,7 +107,7 @@ setup(
     },
     install_requires=reqs,
     dependency_links=[
-        'https://github.com/randomknowledge/glue/tarball/master#egg=glue-0.3_rk',
+        'https://github.com/randomknowledge/glue/tarball/master#egg=glue-0.3-rk',
     ],
     tests_require=['tox', ],
     cmdclass={'test': Tox},
