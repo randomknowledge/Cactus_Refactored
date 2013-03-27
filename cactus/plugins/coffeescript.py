@@ -66,18 +66,16 @@ class CoffeeScriptPlugin(CactusPluginBase):
             "coffee --join {output_filename} --compile --output {dir_js} {files}"
         )
 
-        dir_js = shell_escape(
-            os.path.abspath(
-                os.path.join(
-                    self.site.paths["dist" if dist else "build"],
-                    "static", "js"
-                )
+        dir_js = os.path.abspath(
+            os.path.join(
+                self.site.paths["dist" if dist else "build"],
+                "static", "js"
             )
         )
 
         cmd = coffee.format(
             output_filename=temp_output_filename,
-            dir_js=dir_js,
+            dir_js=shell_escape(dir_js),
             files=files,
         )
 
@@ -91,8 +89,8 @@ class CoffeeScriptPlugin(CactusPluginBase):
 
         if result == 0:
             shutil.move(
-                os.path.join(dir_js, temp_output_filename),
-                os.path.join(dir_js, output_filename),
+                os.path.abspath(os.path.join(dir_js, temp_output_filename)),
+                os.path.abspath(os.path.join(dir_js, output_filename)),
             )
         else:
             try:
