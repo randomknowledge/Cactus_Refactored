@@ -113,3 +113,5 @@ deploy:
     s3_secret_key: "insert secret key here" #only neccessary for type=s3
     s3_bucket: "bucket name" #only neccessary for type=s3
     s3_site_domain: "your.amazon.aws.domain" #only neccessary for type=s3
+    discard:
+      - "static/**/very-large-file.foobar" #do not deploy this file

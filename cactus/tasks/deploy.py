@@ -1,7 +1,9 @@
 # coding: utf-8
+import fnmatch
 import logging
 import getpass
 import boto
+import sys
 from cactus.s3.utils import fileList
 import re
 import os
@@ -60,6 +62,7 @@ class DeployTask(BaseTask):
         site.verify()
         cls.config = site.config.get("deploy").get(target, "default")
         deployment_type = cls.conf("type", "ssh")
+        discard_files = cls.conf("discard", [])
 
         def createSSHClient(server, port=22, user=None, password=None, privkey=None):
             client = paramiko.SSHClient()
@@ -142,11 +145,19 @@ class DeployTask(BaseTask):
                 for f in files:
                     src = os.path.abspath(os.path.join(path, f))
                     dest = to_unix_path(os.path.join(remote_base, remote_path, f))
-                    logging.info("Copying {0} => {1}".format(src, dest))
-                    scp.put(
-                        src,
-                        dest
-                    )
+                    discard = False
+                    for pattern in discard_files:
+                        d = "/**/{0}".format(pattern)
+                        if fnmatch.fnmatch(dest, d):
+                            discard = True
+                    if not discard:
+                        logging.info("Copying {0} => {1}".format(src, dest))
+                        scp.put(
+                            src,
+                            dest
+                        )
+                    else:
+                         logging.info("DISCARD: {0}".format(src))
 
             site.call_plugin_method("postDeploy")
         elif deployment_type == "s3":
