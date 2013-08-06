@@ -35,12 +35,15 @@ end tell
 
 
 def applescript(input):
+    return
+    """
     # Bail if we're not on mac os for now
     if platform.system() != "Darwin":
         return
 
     command = "osascript<<END%sEND" % input
     return run_subprocess(command)
+    """
 
 
 def _insertJavascript(urlMatch, js):
