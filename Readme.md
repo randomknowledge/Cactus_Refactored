@@ -12,6 +12,7 @@ ___
 * [Custom Plugins](#custom-plugins)
 * [Custom Context Processors](#custom-context-processors)
 * [Special Template Tags](#special-template-tags)
+* [Known Bugs/Errors](#known-bugserrors)
 
 ## Introduction
 `Cactus Refactored` is a static website generator using [Python](http://www.python.org/)
@@ -237,3 +238,10 @@ To render a block from a page in a subfolder use the followinf syntax:
 ```html
 {% render_block_from_file 'sub/folder/another-page' 'blockname' %}
 ```
+
+## Known Bugs/Errors
+### Error Loading osascript
+There is an error loading the Adobe Unit Types osascript under OSX 1.6.6+. It is used to refresh a page in the browser.
+Solution: Install the update from Adobe under /Library/ScriptingAdditions available here: http://helpx.adobe.com/photoshop/kb/unit-type-conversion-error-applescript.html
+
+Thanks to [@remeiberlin](https://github.com/remeiberlin) for [reporting](https://github.com/randomknowledge/Cactus_Refactored/issues/3) this!
