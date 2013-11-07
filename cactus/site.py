@@ -228,12 +228,21 @@ class Site(object):
         Configure django to use both our template and pages folder as locations
         to look for included templates.
         """
+
+        default_settings = {
+            'STATIC_URL': '/static/',
+            'TEMPLATE_DIRS': [self.paths['templates'], self.paths['pages']],
+            'INSTALLED_APPS': ['django.contrib.markup']
+        }
+
+        user_settings = self.config.get('common', {}).get('django_settings', {})
+        default_settings.update(user_settings)
+        if not 'django.contrib.markup' in default_settings.get('INSTALLED_APPS'):
+            default_settings['INSTALLED_APPS'] = ['django.contrib.markup'] + default_settings['INSTALLED_APPS']
+
         try:
             from django.conf import settings
-            settings.configure(
-                TEMPLATE_DIRS=[self.paths['templates'], self.paths['pages']],
-                INSTALLED_APPS=['django.contrib.markup']
-            )
+            settings.configure(**default_settings)
         except:
             pass
 

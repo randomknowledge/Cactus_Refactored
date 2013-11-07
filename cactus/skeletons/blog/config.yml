@@ -27,6 +27,12 @@ common:
   # Choose one out of "chrome", "firefox", "opera" or "ie", not used when run in mac os x.
   browser: "chrome"
 
+  # Expert Users: Override django settings like this:
+  # django_settings:
+  #   INSTALLED_APPS:
+  #     - someapp
+  #     - someotherapp
+
 #
 # Plugin specific settings
 # =========================
