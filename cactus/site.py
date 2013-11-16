@@ -2,6 +2,7 @@
 import inspect
 import logging
 from cactus.test_base import CactusTestBase
+import django
 import re
 import shutil
 import socket
@@ -107,7 +108,7 @@ class Site(object):
 
             reload_needed = False
             rebuild_needed = False
-            for p in  changes.get('any', []):
+            for p in changes.get('any', []):
                 if os.path.realpath(os.path.dirname(p)) == os.path.realpath(self.path):
                     if os.path.basename(p) == "config.yml":
                         reload_needed = True
@@ -228,16 +229,17 @@ class Site(object):
         Configure django to use both our template and pages folder as locations
         to look for included templates.
         """
+        django_version_16 = float(django.VERSION[0]) + (float(django.VERSION[1]) / 10.0) > 1.5
 
         default_settings = {
             'STATIC_URL': '/static/',
             'TEMPLATE_DIRS': [self.paths['templates'], self.paths['pages']],
-            'INSTALLED_APPS': ['django.contrib.markup']
+            'INSTALLED_APPS': [] if django_version_16 else ['django.contrib.markup']
         }
 
         user_settings = self.config.get('common', {}).get('django_settings', {})
         default_settings.update(user_settings)
-        if not 'django.contrib.markup' in default_settings.get('INSTALLED_APPS'):
+        if not django_version_16 and not 'django.contrib.markup' in default_settings.get('INSTALLED_APPS'):
             default_settings['INSTALLED_APPS'] = ['django.contrib.markup'] + default_settings['INSTALLED_APPS']
 
         try:
