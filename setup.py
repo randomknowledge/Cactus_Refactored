@@ -107,7 +107,7 @@ setup(
     },
     install_requires=reqs,
     dependency_links=[
-        'https://github.com/randomknowledge/glue/tarball/master#egg=glue-0.3-rk',
+        'git+https://github.com/randomknowledge/glue.git#egg=glue-0.3-rk',
     ],
     tests_require=['tox', ],
     cmdclass={'test': Tox},
