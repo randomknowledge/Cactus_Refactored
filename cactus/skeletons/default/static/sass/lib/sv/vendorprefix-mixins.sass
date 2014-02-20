@@ -1,6 +1,170 @@
-@mixin border-radius($radius)
-  -webkit-border-radius: $radius
-  -moz-border-radius: $radius
-  border-radius: $radius
+@mixin opacity($opacity)
+  opacity: $opacity
+  $opacity-ie: $opacity * 100
+  filter: alpha(opacity=$opacity-ie) //IE8
 
-// To be continued
+
+
+
+@mixin linear-gradient($fromColor, $toColor)
+  background-color: $toColor
+  background-image: -webkit-gradient(linear, left top, left bottom, from($fromColor), to($toColor))
+  background-image: -webkit-linear-gradient(top, $fromColor, $toColor)
+  background-image:    -moz-linear-gradient(top, $fromColor, $toColor)
+  background-image:     -ms-linear-gradient(top, $fromColor, $toColor)
+  background-image:      -o-linear-gradient(top, $fromColor, $toColor)
+  background-image:         linear-gradient(top, $fromColor, $toColor)
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#{$fromColor}', EndColorStr='#{$toColor}')
+
+
+
+
+@mixin img-linear-gradient($img-url, $fromColor, $toColor)
+  background: $toColor
+  background-image: url($img-url)
+  background-image: url($img-url), -webkit-gradient(linear, left top, left bottom, from($fromColor), to($toColor))
+  background-image: url($img-url), -webkit-linear-gradient(top, $fromColor, $toColor)
+  background-image: url($img-url),    -moz-linear-gradient(top, $fromColor, $toColor)
+  background-image: url($img-url),     -ms-linear-gradient(top, $fromColor, $toColor)
+  background-image: url($img-url),      -o-linear-gradient(top, $fromColor, $toColor)
+  background-image: url($img-url),         linear-gradient(top, $fromColor, $toColor)
+
+
+
+
+@mixin transition($args...)
+  -webkit-transition: $args
+  -moz-transition: $args
+  -ms-transition: $args
+  -o-transition: $args
+  transition: $args
+
+
+
+
+@mixin translate ($x, $y)
+  -webkit-transform: translate($x,$y)
+  -moz-transform: translate($x, $y)
+  -ms-transform: translate($x, $y)
+  -o-transform: translate($x, $y)
+  transform: translate($x, $y)
+
+
+
+
+@mixin translate3d ($x, $y, $z)
+  -webkit-transform: translate3d($x,$y, $z)
+  -moz-transform: translate3d($x, $y, $z)
+  -ms-transform: translate3d($x, $y, $z)
+  -o-transform: translate3d($x, $y, $z)
+
+
+
+
+@mixin scale($value)
+  -webkit-transform: scale($value)
+  -moz-transform: scale($value)
+  -ms-transform: scale($value)
+  -o-transform: scale($value)
+
+
+
+
+@mixin transform($value)
+  -webkit-transform: $value
+  -moz-transform: $value
+  -ms-transform: $value
+  -o-transform: $value
+
+
+
+
+@mixin transform-origin ($y, $x)
+  -webkit-transform-origin: $y $x
+  -moz-transform-origin: $y $x
+  -ms-transform-origin: $y $x
+  -o-transform-origin: $y $x
+  transform-origin: $y $x
+
+
+
+
+@mixin boxshadow ($value)
+  -webkit-box-shadow: $value
+  box-shadow: $value
+
+
+
+
+@mixin transition-delay ($time)
+  -webkit-transition-delay: $time
+  -moz-transition-delay: $time
+  -ms-transition-delay: $time
+  -o-transition-delay: $time
+
+
+
+
+@mixin font-size($size)
+  font-size: $size
+  font-size: calculateRem($size)
+
+@function calculateRem($size)
+  $remSize: $size / 16px
+  @return $remSize * 1rem
+
+
+
+@mixin bp-large
+  @media only screen and (max-width: 60em)
+    @content
+
+
+@mixin bp-medium
+  @media only screen and (max-width: 40em)
+    @content
+
+
+@mixin bp-small
+  @media only screen and (max-width: 30em)
+    @content
+
+
+
+
+@mixin keyframes($animation-name)
+  @-webkit-keyframes $animation-name
+    @content
+
+  @-moz-keyframes $animation-name
+    @content
+
+  @-ms-keyframes $animation-name
+    @content
+
+  @-o-keyframes $animation-name
+    @content
+
+  @keyframes $animation-name
+    @content
+
+
+@mixin animation($str)
+  -webkit-animation: #{$str}
+  -moz-animation: #{$str}
+  -ms-animation: #{$str}
+  -o-animation: #{$str}
+  animation: #{$str}
+
+
+
+%clearfix
+  *zoom: 1
+  &:before
+    content: " "
+    display: table
+
+  &:after
+    content: " "
+    display: table
+    clear: both
