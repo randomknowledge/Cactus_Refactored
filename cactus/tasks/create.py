@@ -8,7 +8,7 @@ import os
 class CreateTask(BaseTask):
     """
     Optionally provide a skeleton name or path.
-    Builtin skeletons are 'default' and 'blog'.
+    Builtin skeleton is 'default'.
     """
 
     helptext_short = "create <path> [<skeleton type>|<skeleton path>]: " \

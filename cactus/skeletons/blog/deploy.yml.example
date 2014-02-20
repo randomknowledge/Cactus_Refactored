@@ -1,4 +1,0 @@
-default:
-  auth: public-key
-  private_key: "{home}/.ssh/id_rsa"
-  user: flfin

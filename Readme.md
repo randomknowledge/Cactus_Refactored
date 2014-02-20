@@ -8,7 +8,6 @@ ___
 * [Installation](#installation)
 * [Using `Cactus Refactored`](#using-cactus-refactored)
 * [Usage example](#usage-example)
-* [CSS Sprites](#css-sprites)
 * [Custom Plugins](#custom-plugins)
 * [Custom Context Processors](#custom-context-processors)
 * [Special Template Tags](#special-template-tags)
@@ -22,7 +21,7 @@ so credits go to [Koenbok](https://github.com/koenbok/).
 By now `Cactus Refactored` has the following features:
 
 * create projects from skeletons (builtin or custom)
-	* builtin skeletons are `default` and `blog`
+	* builtin skeleton is `default`
 * serve project via builtin development webserver with auto-reload-functionality working on Windows, Mac OS X and Linux
 * (obviously) build projects
 * deploy projects via SSH (public key auth and simple password auth are supported)
@@ -31,11 +30,9 @@ By now `Cactus Refactored` has the following features:
 	* Coffeescript
 	* Sass/Scss
 	* Less
-	* CSS Sprites
 	* imageopti (lossless image compression for png, gif and jpg files)
 	* minify JS
 	* Haml
-	* Blog
 * custom template context processors (see [context_processors/default.py](https://github.com/randomknowledge/Cactus_Refactored/blob/master/cactus/context_processors/default.py) for an example)
 * completely configurable via [YAML](http://de.wikipedia.org/wiki/YAML). See [config.yml](https://github.com/randomknowledge/Cactus_Refactored/blob/master/cactus/skeletons/default/config.yml) for details.
 
@@ -50,7 +47,6 @@ ____
 * [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/)
 * [boto](https://github.com/boto/boto/)
 * [HamlPy](https://github.com/jessemiller/HamlPy/)
-* [Glue](https://github.com/jorgebastida/glue/)
 
 ## Installation
 
@@ -60,10 +56,10 @@ Install [pip](http://pypi.python.org/pypi/pip):
 $ sudo easy_install pip
 ```
 
-Download source and install package using pip (Version 1.5 Stable):
+Download source and install package using pip (Version 1.6 Stable):
 
 ```console
-$ sudo pip install -e git+https://github.com/randomknowledge/Cactus_Refactored.git@1-5-stable#egg=Cactus
+$ sudo pip install -e git+https://github.com/randomknowledge/Cactus_Refactored.git@1-6-stable#egg=Cactus
 ```
 
 Download source and install package using pip (Development version):
@@ -93,87 +89,6 @@ $ cactus serve
 <CTRL>+C
 $ cactus build
 ```
-
-## CSS Sprites
-To use CSS Sprites make sure the `csssprites` plugin is activated in your `config.yml` (default):
-```yaml
-common:
-  plugins:
-    # [..]
-    - csssprites
-    # [..]
-```
-
-You can configure the `csssprites` plugin in your `config.yml` like this (this is also the default config):
-```yaml
-plugins:
-  csssprites:
-    # path (relative to static) where the images to generate a sprite from are stored
-    input_dir: img/_sprites
-    
-    # Directory (relative to static) in which the resulting sprite image is stored
-    output_dir: img/sprites
-    
-    # Directory (relative to static) in which the resulting sprite css is stored
-    css_dir: css/sprites
-    
-    # During deploy, omit 'input_dir' if set to true
-    dont_deploy_input_dir: true
-    
-    # See http://glue.readthedocs.org/en/latest/ratios.html#how-retina-and-ratios-work
-    retina: false
-    
-    # Glue command to be called. Change this to your needs
-    command: "glue --cachebuster --crop {retina} {input_dir} --css={css_dir} --img={output_dir}"
-```
-
-Following the default settings your directory structure (inside 'static') should be like this:
-
-```console
-img/
-└── _sprites/
-    └── sprite1/
-        ├── some_icon.png
-        └── another_icon.png
-```
-
-The resulting structure will be like this:
-
-```console
-img/
-├── sprites/
-|   └── sprite1.png
-└── css/
-    └── sprites/
-        └── sprite1.css
-```
-
-If you are using the sass plugin, make sure to import the generated sprite sass file:
-```sass
-@import "sprites/sprite1"
-```
-
-Without the sass plugin make sure the generated css file is included in your templates (before main.css).
-```html
-<head>
-    <link rel="stylesheet" href="{{ STATIC_URL }}/css/sprites/sprite1.css">
-</head>
-```
-
-You can then use the sprites like this:
-```html
-<body>
-    <div class="sprite-sprite1-some_icon"></div>
-</body>
-```
-
-As you can see you can see for every image in the sprite there will be a class created using this syntax:
-
-```console
-sprite-<sprite_name>-<image_name>
-```
-
-See the [Glue documentation](http://glue.readthedocs.org/en/latest/quickstart.html#and-why-those-css-class-names) for details.
 
 ## Custom Plugins
 
