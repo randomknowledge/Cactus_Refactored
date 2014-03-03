@@ -71,6 +71,7 @@ reqs = [
     'BeautifulSoup==3.2.0',
     'boto==2.8.0',
     'hamlpy==0.82.2',
+    'Twisted==13.2.0',
 ]
 if platform.system() != "Darwin":
     reqs.append('selenium==2.27.0')

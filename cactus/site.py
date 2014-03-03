@@ -5,7 +5,6 @@ from cactus.test_base import CactusTestBase
 import django
 import re
 import shutil
-import socket
 import traceback
 import sys
 import os
@@ -146,23 +145,26 @@ class Site(object):
                 self.listener.resume()
 
         from .listener import Listener
-        from .server import Server, RequestHandler
 
         self.listener = Listener(
             self.path, rebuild, ignore=lambda x: '/.tmp/' in x
         )
         self.listener.run()
-        try:
-            httpd = Server((host, port), RequestHandler)
-        except socket.error:
-            logging.info("Could not start webserver, port is in use.")
-            return
+
+        from twisted.web.server import Site
+        from twisted.web.static import File
+        from twisted.internet import reactor
+
+        resource = File(self.paths['build'])
+        factory = Site(resource)
+        reactor.listenTCP(8000, factory)
+
         browser.openurl("http://localhost:{0}".format(port), self)
 
         try:
-            httpd.serve_forever()
+            reactor.run()
         except (KeyboardInterrupt, SystemExit):
-            httpd.server_close()
+            reactor.stop()
 
         logging.info('See you!')
 
