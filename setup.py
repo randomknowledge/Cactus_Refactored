@@ -91,7 +91,7 @@ class Tox(TestCommand):
 
 setup(
     name='Cactus',
-    version="1.6.0",
+    version="1.6.1",
     description="Static site generation and deployment.",
     long_description=__doc__,
     url='http://github.com/randomknowledge/Cactus_Refactored',
