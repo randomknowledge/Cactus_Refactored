@@ -47,6 +47,7 @@ ____
 * [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/)
 * [boto](https://github.com/boto/boto/)
 * [HamlPy](https://github.com/jessemiller/HamlPy/)
+* [Twisted](https://twistedmatrix.com)
 
 ## Installation
 
