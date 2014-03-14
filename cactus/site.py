@@ -151,13 +151,13 @@ class Site(object):
         )
         self.listener.run()
 
-        from twisted.web.server import Site
+        from twisted.web.server import Site as Website
         from twisted.web.static import File
         from twisted.internet import reactor
 
         resource = File(self.paths['build'])
-        factory = Site(resource)
-        reactor.listenTCP(8000, factory)
+        factory = Website(resource)
+        reactor.listenTCP(port, factory)
 
         browser.openurl("http://localhost:{0}".format(port), self)
 
