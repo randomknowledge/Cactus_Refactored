@@ -10,8 +10,9 @@ re_jpegoptim = re.compile(r'\.jpe?g$', re.I)
 
 class ImageOptiPlugin(CactusPluginBase):
     def postDist(self, *args, **kwargs):
+        from django.conf import settings
 
-        files = fileList(os.path.join(self.site.paths['dist'], 'static'))
+        files = fileList(os.path.join(self.site.paths['dist'], settings.STATIC_URL_REL))
 
         def filter_png(f):
             return bool(re_optipng.search(f))

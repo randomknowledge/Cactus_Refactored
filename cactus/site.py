@@ -247,6 +247,15 @@ class Site(object):
         try:
             from django.conf import settings
             settings.configure(**default_settings)
+
+            static_url = settings.STATIC_URL
+            if not static_url.endswith(os.sep):
+                static_url += os.sep
+            settings.STATIC_URL_REL = static_url
+            if settings.STATIC_URL_REL.startswith(os.sep):
+                settings.STATIC_URL_REL = settings.STATIC_URL_REL[1:]
+            settings.STATIC_URL_NAME = os.path.basename(os.path.dirname(static_url))
+
         except:
             pass
 
@@ -262,8 +271,10 @@ class Site(object):
         """
         Copy static files to build folder.
         """
+        from django.conf import settings
+
         buildpath = self.paths["dist" if dist else "build"]
-        s = os.path.join(buildpath, 'static')
+        s = os.path.join(buildpath, settings.STATIC_URL_REL)
 
         # If there is a folder, replace it with a symlink
         if os.path.exists(s):
@@ -271,7 +282,7 @@ class Site(object):
 
         def ignore_special(src, names):
             bn = os.path.basename(src)
-            if bn == "static":
+            if bn == settings.STATIC_URL_NAME:
                 return self.config.get('build', {}).get('discard_static', [])
             return []
 

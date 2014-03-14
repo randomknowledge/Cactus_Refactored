@@ -16,6 +16,7 @@ class CoffeeScriptPlugin(CactusPluginBase):
         self.run(dist=True)
 
     def run(self, *args, **kwargs):
+        from django.conf import settings
         dist = kwargs.get("dist", False)
 
         coffeepath = os.path.realpath(
@@ -69,7 +70,7 @@ class CoffeeScriptPlugin(CactusPluginBase):
         dir_js = os.path.abspath(
             os.path.join(
                 self.site.paths["dist" if dist else "build"],
-                "static", "js"
+                settings.STATIC_URL_REL, "js"
             )
         )
 

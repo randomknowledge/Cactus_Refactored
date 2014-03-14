@@ -5,7 +5,6 @@ import os
 
 class BuildTask(BaseTask):
     """
-    Lorem Ipsum...
     """
 
     helptext_short = "build: Rebuild your site from source files"

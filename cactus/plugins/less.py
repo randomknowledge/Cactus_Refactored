@@ -12,10 +12,11 @@ class LessPlugin(CactusPluginBase):
         self.run(dist=True)
 
     def run(self, *args, **kwargs):
+        from django.conf import settings
         dist = kwargs.get("dist", False)
         buildpath = "dist" if dist else "build"
         less_dir = os.path.join(self.site.paths['static'], "less")
-        css_dir = os.path.join(self.site.paths[buildpath], 'static', 'css')
+        css_dir = os.path.join(self.site.paths[buildpath], settings.STATIC_URL_REL, 'css')
         if not os.path.isdir(less_dir) or not os.listdir(less_dir):
             return
 

@@ -4,7 +4,6 @@ import codecs
 import logging
 from django.template import Template, Context
 from .utils import parseValues
-from .templatetags import cactus_tags
 
 
 class Page(object):
@@ -37,8 +36,12 @@ class Page(object):
         # Site context
         context = self.site._contextCache
 
+        from django.conf import settings
+        static = '{0}{1}'.format(self.url_prefix, settings.STATIC_URL)
+        if static.endswith(os.sep):
+            static = static[:-1]
         context.update({
-            'STATIC_URL': '{0}/static'.format(self.url_prefix),
+            'STATIC_URL': static,
             'ROOT_URL': self.url_prefix,
             'URL': self.path.replace(os.sep, "/"),
         })

@@ -15,9 +15,10 @@ class MinifyJsPlugin(CactusPluginBase):
     js_dir = None
 
     def _prepare(self, *args, **kwargs):
+        from django.conf import settings
         dist = kwargs.get("dist", False)
         self.buildpath = "dist" if dist else "build"
-        self.js_dir = os.path.join(self.site.paths[self.buildpath], 'static', 'js')
+        self.js_dir = os.path.join(self.site.paths[self.buildpath], settings.STATIC_URL_REL, 'js')
         if not os.path.isdir(self.js_dir) or not os.listdir(self.js_dir):
             return False
 

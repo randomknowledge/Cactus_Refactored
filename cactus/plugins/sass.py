@@ -12,6 +12,7 @@ class SassPlugin(CactusPluginBase):
         self.run(dist=True)
 
     def run(self, *args, **kwargs):
+        from django.conf import settings
         s_type = self.config.get("type", "sass")
         if s_type != "sass" and s_type != "scss":
             s_type = "sass"
@@ -19,7 +20,7 @@ class SassPlugin(CactusPluginBase):
         dist = kwargs.get("dist", False)
         buildpath = "dist" if dist else "build"
         sass_dir = os.path.join(self.site.paths['static'], s_type)
-        css_dir = os.path.join(self.site.paths[buildpath], 'static', 'css')
+        css_dir = os.path.join(self.site.paths[buildpath], settings.STATIC_URL_REL, 'css')
         if not os.path.isdir(sass_dir) or not os.listdir(sass_dir):
             return
 
