@@ -57,8 +57,8 @@ class DeployTask(BaseTask):
             cls.local_settings = {}
             logging.warn("No local deploy.yml present or error parsing it:\n{0}".format(e))
 
-        from cactus import site
-        site = site.Site(os.getcwd())
+        from cactus import site as cactus_site
+        site = cactus_site.Site(os.getcwd())
         site.verify()
         cls.config = site.config.get("deploy").get(target, "default")
         deployment_type = cls.conf("type", "ssh")
@@ -199,7 +199,17 @@ class DeployTask(BaseTask):
                 dist_dir = site.paths['dist']
                 for f in fileList(dist_dir, relative=True):
                     s3_file = File(site, f, cls.conf("s3_site_domain"))
-                    s3_file.upload(selected_bucket)
+
+                    discard = False
+                    for pattern in discard_files:
+                        d = "/**/{0}".format(pattern)
+                        if fnmatch.fnmatch(f, d):
+                            discard = True
+                    if not discard:
+                        s3_file.upload(selected_bucket)
+                    else:
+                         logging.info("DISCARD: {0}".format(f))
+
             site.call_plugin_method("postDeploy")
             logging.info("Deployment complete. Please check your site at:\nhttp://{0}/".format(cls.conf("s3_site_domain")))
         else:
