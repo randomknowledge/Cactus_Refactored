@@ -61,6 +61,7 @@ class DeployTask(BaseTask):
         site = cactus_site.Site(os.getcwd())
         site.verify()
         cls.config = site.config.get("deploy").get(target, "default")
+
         deployment_type = cls.conf("type", "ssh")
         discard_files = cls.conf("discard", [])
 
@@ -202,8 +203,7 @@ class DeployTask(BaseTask):
 
                     discard = False
                     for pattern in discard_files:
-                        d = "/**/{0}".format(pattern)
-                        if fnmatch.fnmatch(f, d):
+                        if fnmatch.fnmatch(f, pattern):
                             discard = True
                     if not discard:
                         s3_file.upload(selected_bucket)
