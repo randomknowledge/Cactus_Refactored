@@ -17,9 +17,13 @@ class Page(object):
             # 'build': os.path.join('.build', self.path),
         }
 
-        self.url_prefix = '/'.join(
-            ['..' for i in xrange(len(self.path.split(os.sep)) - 1)]
-        ) or '.'
+        user_settings = self.site.config.get('common', {}).get('django_settings', {})
+        if not 'STATIC_URL' in user_settings:
+            self.url_prefix = '/'.join(
+                ['..' for i in xrange(len(self.path.split(os.sep)) - 1)]
+            ) or '.'
+        else:
+            self.url_prefix = ''
 
 
     def data(self):
