@@ -64,7 +64,7 @@ for name in os.listdir('cactus/tests'):
     package_data["cactus"].append("tests/{0}".format(name))
 
 reqs = [
-    'Django>=1.4.1,<1.7',
+    'Django>=1.4.1,<1.7.0',
     'PyYAML==3.10',
     'paramiko==1.9.0',
     'slimit>=0.7.3,<=0.7.4',
@@ -91,7 +91,7 @@ class Tox(TestCommand):
 
 setup(
     name='Cactus',
-    version="1.6.2",
+    version="1.6.3",
     description="Static site generation and deployment.",
     long_description=__doc__,
     url='http://github.com/randomknowledge/Cactus_Refactored',
